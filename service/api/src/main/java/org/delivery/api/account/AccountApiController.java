@@ -23,5 +23,5 @@ public class AccountApiController {
                 .email("wnfl@naver.com")
                 .registeredAt(LocalDateTime.now())
                 .build();
-    }
+    }//swagger-ui: http://localhost:8080/swagger-ui/index.html, Schmas에 AccountMeResponse의 구조를 보여줌
 }
