@@ -2,6 +2,7 @@ package org.delivery.api.account;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.account.model.AccountMeResponse;
+import org.delivery.api.common.api.Api;
 import org.delivery.db.account.AccountEntity;
 import org.delivery.db.account.AccountRepository;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +18,12 @@ public class AccountApiController {
 
     private final AccountRepository accountRepository;//JpaConfig: db(다른 패키지)에 있는 것을 빈으로 등록하기 위해서 Configuration 필요
     @GetMapping("/me")
-    public AccountMeResponse me(){
-        return AccountMeResponse.builder()
+    public Api<AccountMeResponse> me(){
+        var response =AccountMeResponse.builder()
                 .name("홍길동")
                 .email("wnfl@naver.com")
                 .registeredAt(LocalDateTime.now())
                 .build();
+        return Api.ok(response);//Api의 body <T>는 AccountMeResponse 형태, swagger 결과: notion
     }//swagger-ui: http://localhost:8080/swagger-ui/index.html, Schmas에 AccountMeResponse의 구조를 보여줌
 }
