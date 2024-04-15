@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum UserErrorCode implements ErrorCodeIfs{
 
-
     USER_NOT_FOUND(400,1404,"사용자를 찾을 수 없음"),
     ;
     //final: 변형이 있으면 안됨

@@ -3,6 +3,7 @@ package org.delivery.api.account;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.account.model.AccountMeResponse;
 import org.delivery.api.common.api.Api;
+import org.delivery.api.common.error.UserErrorCode;
 import org.delivery.db.account.AccountEntity;
 import org.delivery.db.account.AccountRepository;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,24 @@ public class AccountApiController {
                 .email("wnfl@naver.com")
                 .registeredAt(LocalDateTime.now())
                 .build();
+
+        //RunTimeException Test
+        var str="hihi";
+        var age=Integer.parseInt(str);
+
         return Api.OK(response);//Api의 body <T>는 AccountMeResponse 형태, swagger 결과: notion
+
+        //return Api.ERROR(UserErrorCode.USER_NOT_FOUND,"홍길동이라는 사용자 없음");
+        /*
+    {
+"result": {
+"result_code": 1404,
+"result_message": "사용자를 찾을 수 없음",
+"result_description": "홍길동이라는 사용자 없음"
+},
+"body": null
+}
+         */
+
     }//swagger-ui: http://localhost:8080/swagger-ui/index.html, Schmas에 AccountMeResponse의 구조를 보여줌
 }
