@@ -3,7 +3,9 @@ package org.delivery.api.account;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.account.model.AccountMeResponse;
 import org.delivery.api.common.api.Api;
+import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.error.UserErrorCode;
+import org.delivery.api.exception.ApiException;
 import org.delivery.db.account.AccountEntity;
 import org.delivery.db.account.AccountRepository;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +29,13 @@ public class AccountApiController {
                 .build();
 
         //RunTimeException Test
-        var str="hihi";
-        var age=Integer.parseInt(str);
-
+        var str="안녕하세요";
+        int age=0;
+        try {
+            Integer.parseInt(str);
+        }catch (Exception e){
+            throw new ApiException(ErrorCode.SERVER_ERROR,e,"사용자 Me 호출 시 에러 발생");
+        }
         return Api.OK(response);//Api의 body <T>는 AccountMeResponse 형태, swagger 결과: notion
 
         //return Api.ERROR(UserErrorCode.USER_NOT_FOUND,"홍길동이라는 사용자 없음");

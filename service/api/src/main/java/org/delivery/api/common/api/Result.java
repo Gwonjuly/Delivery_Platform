@@ -28,7 +28,7 @@ public class Result {
         return Result.builder()
                 .resultCode(errorCodeIfs.getErrorCode())
                 .resultMessage(errorCodeIfs.getDescription())
-                .resultDescription("성공")
+                .resultDescription("에러 발샐")
                 .build();
     }
     public static Result ERROR(ErrorCodeIfs errorCodeIfs,Throwable tx){//비추임
