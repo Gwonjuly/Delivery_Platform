@@ -24,6 +24,6 @@ public class AccountApiController {
                 .email("wnfl@naver.com")
                 .registeredAt(LocalDateTime.now())
                 .build();
-        return Api.ok(response);//Api의 body <T>는 AccountMeResponse 형태, swagger 결과: notion
+        return Api.OK(response);//Api의 body <T>는 AccountMeResponse 형태, swagger 결과: notion
     }//swagger-ui: http://localhost:8080/swagger-ui/index.html, Schmas에 AccountMeResponse의 구조를 보여줌
 }
