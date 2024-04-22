@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor//BaseEntity에 생성자 안넣어주면 에러남
 @AllArgsConstructor// //
 @SuperBuilder//부모의 entity(BaseEntity)도 빌더에 포함
-@EqualsAndHashCode//callSuper=true: 부모의 entity를 포함해서 비교, false면 해당 entity에서 비교
+@EqualsAndHashCode(callSuper = true)//callSuper=true: 부모의 entity를 포함해서 비교, false면 해당 entity에서 비교
 public class UserEntity extends BaseEntity {
 
     @Column(length = 50,nullable = false)//db의 user 테이블과 속성 일치시킴
