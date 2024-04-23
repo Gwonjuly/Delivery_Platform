@@ -31,7 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
             "/v3/api-docs/**"
     );
 
-    @Override//인터셉터 등록
+    @Override//인터셉터 등록(인증(로그인된 사용자) 체크)
     public void addInterceptors(InterceptorRegistry registry) {
         WebMvcConfigurer.super.addInterceptors(registry);
         registry.addInterceptor(authorizationInterceptor)//해당 인터셉터 등록
