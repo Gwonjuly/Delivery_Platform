@@ -28,5 +28,7 @@ public class UserOpenApiController {
             @RequestBody Api<UserRegisterRequest> request
     ){
         var response=userBusiness.register(request.getBody());
+        return Api.OK(response);
+
     }
 }
