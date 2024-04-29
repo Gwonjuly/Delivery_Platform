@@ -2,6 +2,7 @@ package org.delivery.api.domain.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.api.Api;
+import org.delivery.api.domain.token.controller.model.TokenResponse;
 import org.delivery.api.domain.user.business.UserBusiness;
 import org.delivery.api.domain.user.controller.model.UserLoginRequest;
 import org.delivery.api.domain.user.controller.model.UserRegisterRequest;
@@ -54,11 +55,26 @@ public class UserOpenApiController {
 
     //로그인
     @PostMapping("/login")
-    public Api<UserResponse> login(
+    public Api<TokenResponse> login(
             @Valid
             @RequestBody Api<UserLoginRequest> request
     ){
         var response=userBusiness.login(request.getBody());//Api<>가 result+body로 구성
         return Api.OK(response);
     }
+    /* 로그인 시, 발행되는 토큰
+    {
+  "result": {
+    "result_code": 200,
+    "result_message": "성공",
+    "result_description": "성공"
+  },
+  "body": {
+    "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImV4cCI6MTcxNDQwNDU0Mn0.9kCKb0kLWvck6m6-oiroyW9adNIpjAvclduDWIWl97U",
+    "access_token_expired_at": "2024-04-30T00:29:02.6216458",
+    "refresh_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VJZCI6MSwiZXhwIjoxNzE0NDQ0MTQyfQ.p1AA_8zfEMqfsCQiKHFqaXbFriKCIcNdX8Nx0jKYmhQ",
+    "refresh_token_expire_at": "2024-04-30T11:29:02.6492637"
+  }
+}
+     */
 }
