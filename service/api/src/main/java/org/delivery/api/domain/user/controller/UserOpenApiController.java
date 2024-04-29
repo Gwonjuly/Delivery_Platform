@@ -3,6 +3,7 @@ package org.delivery.api.domain.user.controller;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.api.Api;
 import org.delivery.api.domain.user.business.UserBusiness;
+import org.delivery.api.domain.user.controller.model.UserLoginRequest;
 import org.delivery.api.domain.user.controller.model.UserRegisterRequest;
 import org.delivery.api.domain.user.controller.model.UserResponse;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,35 @@ public class UserOpenApiController {
     ){
         var response=userBusiness.register(request.getBody());
         return Api.OK(response);
+    }
+    //Api<UserRegisterRequest> 형식
+    /*
+    {
+  "result": {
+    "result_code": 0,
+    "result_message": "string",
+    "result_description": "string"
+  },
+  "body": { =  response
+    "id": 0,
+    "name": "string",
+    "email": "string",
+    "status": "REGISTERED",
+    "address": "string",
+    "registered_at": "2024-04-24T13:31:47.127Z",
+    "unregistered_at": "2024-04-24T13:31:47.127Z",
+    "last_login_at": "2024-04-24T13:31:47.127Z"
+  }
+}
+     */
 
+    //로그인
+    @PostMapping("/login")
+    public Api<UserResponse> login(
+            @Valid
+            @RequestBody Api<UserLoginRequest> request
+    ){
+        var response=userBusiness.login(request.getBody());//Api<>가 result+body로 구성
+        return Api.OK(response);
     }
 }
