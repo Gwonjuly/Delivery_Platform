@@ -2,7 +2,9 @@ package org.delivery.api.conifg.web;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.interceptor.AuthorizationInterceptor;
+import org.delivery.api.resolver.UserSessionResolver;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,6 +15,7 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final AuthorizationInterceptor authorizationInterceptor;//이거 component 처리되어 있음
+    private final UserSessionResolver userSessionResolver;// //
 
     //open-api로 시작하는 모든 주소, 해당되는 주소는 검증하지 않음
     private List<String> OPEN_API=List.of("/open-api/**");
@@ -39,5 +42,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns(DEFAULT_EXCLUDE)
                 .excludePathPatterns(SWAGGER)
                 ;
+    }
+
+    @Override//리졸버 등록(UserSessionResolver of HandlerMethodArgumentResolver)
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        //WebMvcConfigurer.super.addArgumentResolvers(resolvers);
+        resolvers.add(userSessionResolver);
     }
 }

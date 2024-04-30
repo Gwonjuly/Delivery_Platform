@@ -58,5 +58,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
         }
         throw new ApiException(ErrorCode.BAD_REQUEST,"인증 실패");
+        /** 인터셉터 역할
+         * 1. authorization-token GET 후 검증
+         * 2. RequestContextHolder를 통해 SCOPE_REQUEST에 userId 등록
+         */
     }
 }
