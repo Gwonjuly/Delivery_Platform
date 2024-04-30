@@ -41,4 +41,9 @@ public class UserService {
         return userRepository.findFirstByEmailAndPasswordAndStatusOrderByIdDesc(email,password, UserStatus.REGISTERED)
                 .orElseThrow(()->new ApiException(UserErrorCode.USER_NOT_FOUND));//사용자가  없으면 throw 발생
     }
+
+    public UserEntity getUserWithThrow(Long userId){
+        return userRepository.findFirstByIdAndStatusOrderByIdDesc(userId,UserStatus.REGISTERED)
+                .orElseThrow(()-> new ApiException(UserErrorCode.USER_NOT_FOUND));
+    }
 }

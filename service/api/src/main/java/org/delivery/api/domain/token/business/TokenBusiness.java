@@ -37,4 +37,10 @@ public class TokenBusiness {
                 })//null일 경우
                 .orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT));
     }
+
+    //토큰으로 헤더 인증, 반환 userId
+    public Long validationAccessToken(String accessToken){
+        var userId=tokenService.validationToken(accessToken);
+        return userId;
+    }
 }

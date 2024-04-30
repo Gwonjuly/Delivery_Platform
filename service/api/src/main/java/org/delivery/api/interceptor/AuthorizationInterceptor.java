@@ -2,13 +2,22 @@ package org.delivery.api.interceptor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.delivery.api.ApiApplication;
+import org.delivery.api.common.error.ErrorCode;
+import org.delivery.api.common.error.TokenErrorCode;
+import org.delivery.api.domain.token.business.TokenBusiness;
+import org.delivery.api.exception.ApiException;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
+
 /*
 인터셉터를 등록하기 위해서 Config 설정 필요
  */
@@ -16,6 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
+
+    private final TokenBusiness tokenBusiness;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {//ctrl + i
 
@@ -32,6 +44,19 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
 
         // TODO header 검증
-        return true;//일단 통과 처리
+        var accessToken=request.getHeader("authorization-token");
+        if(accessToken==null){
+            throw new ApiException(TokenErrorCode.AUTHORIZATION_TOKEN_NOT_FOUND);
+        }
+
+        var userId=tokenBusiness.validationAccessToken(accessToken);//값이 없었으면 전단게에서 throw 터졌음
+
+        //검증 완료 후, userId 저장함 어디에? requestContext: Local Thread로 하나의 리퀘스트에 대해 유효하게 글로벌하게 저장할 수 있는 영역
+        if(userId!=null) {
+            var requestContext = Objects.requireNonNull(RequestContextHolder.getRequestAttributes());
+            requestContext.setAttribute("userId", userId, RequestAttributes.SCOPE_REQUEST);//requestContext 영역에 리퀘스트 단위로 userId 저장
+            return true;
+        }
+        throw new ApiException(ErrorCode.BAD_REQUEST,"인증 실패");
     }
 }
