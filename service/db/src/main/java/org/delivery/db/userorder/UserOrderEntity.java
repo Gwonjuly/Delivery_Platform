@@ -30,7 +30,7 @@ public class UserOrderEntity extends BaseEntity {
     private UserOrderStatus status;
 
     @Column(precision = 11,scale = 4,nullable = false)
-    private BigDecimal amount;
+    private BigDecimal amount;//주문 총 금액
 
     private LocalDateTime orderedAt;
 

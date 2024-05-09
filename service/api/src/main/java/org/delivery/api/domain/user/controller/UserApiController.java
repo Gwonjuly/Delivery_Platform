@@ -22,6 +22,7 @@ public class UserApiController {
 
     private final UserBusiness userBusiness;
 
+    //로그인한 사용자 호출
     @GetMapping("/me")
     public Api<UserResponse> me(@UserSession User user){
 
