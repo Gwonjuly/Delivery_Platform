@@ -19,4 +19,8 @@ public interface UserOrderRepository extends JpaRepository<UserOrderEntity, Long
 
     //select * from user_order where user_id=? and status in (?,?..) order by id desc, in: 복수 개로 select
     List<UserOrderEntity> findAllByUserIdAndStatusInOrderByIdDesc(Long userId, List<UserOrderStatus> status);
+
+
+    //select *from user_order where id =? and userId=?
+    Optional<UserOrderEntity> findAllByIdAndUserId(Long id, Long userId);
 }

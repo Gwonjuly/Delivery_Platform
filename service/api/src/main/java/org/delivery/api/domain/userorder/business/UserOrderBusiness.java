@@ -105,4 +105,47 @@ public class UserOrderBusiness {
         }).collect(Collectors.toList());
        return userOrderDetailResponseList;
     }
+
+    public List<UserOrderDetailResponse> history(User user) {
+        var usrOrderEntityList=userOrderService.history(user.getId());
+        var userOrderDetailResponseList=usrOrderEntityList.stream().map(it->{
+            var userOrderMenuList=userOrderMenuService.getUserOrderMenu(it.getId());
+
+            var storeMenuEntityList=userOrderMenuList.stream()
+                    .map(i->{
+                        return storeMenuService.getStoreMenuWithThrow(i.getStoreMenuId());
+                    })
+                    .collect(Collectors.toList());
+
+            var storeEntity=storeService.getStoreWithThrow(
+                    storeMenuEntityList.stream().findFirst().get().getStoreId());
+
+            return UserOrderDetailResponse.builder()
+                    .storeResponse(storeConverter.toResponse(storeEntity))
+                    .userOrderResponse(userOrderConverter.toResponse(it))
+                    .storeMenuResponseList(storeMenuConverter.toResponse(storeMenuEntityList))
+                    .build();
+        }).collect(Collectors.toList());
+        return userOrderDetailResponseList;
+    }
+
+    public UserOrderDetailResponse read(User user, Long orderId) {
+        var userOrderEntity=userOrderService.getUserOrderWithTOutStatusWithThrow(orderId,user.getId());
+
+        //사용자가 주문한 메뉴
+        var userOrderMenuList=userOrderMenuService.getUserOrderMenu(userOrderEntity.getId());
+        var storeMenuEntityList=userOrderMenuList.stream()
+                .map(it->{
+                    return storeMenuService.getStoreMenuWithThrow(it.getStoreMenuId());
+                }).collect(Collectors.toList());
+
+        //사용자가 주문한 스토어
+        var storeEntity=storeService.getStoreWithThrow(storeMenuEntityList.stream().findFirst().get().getStoreId());
+
+        return UserOrderDetailResponse.builder()
+                .userOrderResponse(userOrderConverter.toResponse(userOrderEntity))
+                .storeMenuResponseList(storeMenuConverter.toResponse(storeMenuEntityList))
+                .storeResponse(storeConverter.toResponse(storeEntity))
+                .build();
+    }
 }
