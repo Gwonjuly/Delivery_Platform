@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 //test 컨트롤러
 public class HealthOpenApiController {
 
-    private final Producer producer;
+    //private final Producer producer;
 
     @GetMapping("/health")
     public void health(){
         log.info("health call");
-        producer.producer("delivery.exchange", "delivery.key","hello");
+     //   producer.producer("delivery.exchange", "delivery.key","hello");
     }
 }
