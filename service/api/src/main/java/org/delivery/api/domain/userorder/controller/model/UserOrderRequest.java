@@ -19,6 +19,9 @@ public class UserOrderRequest {
      */
 
     @NotNull
+    private Long storeId;
+
+    @NotNull
     private List<Long> storeMenuIdList;//user_order_mene 테이블에 있는 N의 id;
 
 }

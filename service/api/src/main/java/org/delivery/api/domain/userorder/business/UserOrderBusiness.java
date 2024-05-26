@@ -51,7 +51,7 @@ public class UserOrderBusiness {
                 .collect(Collectors.toList());
 
         //entity: use + menu id를 통한 주문 총 금액
-        var userOrderEntity=userOrderConverter.toEntity(user, storeMenuEntityList);
+        var userOrderEntity=userOrderConverter.toEntity(user, userOrderRequest.getStoreId() ,storeMenuEntityList);
 
         //주문 생성(REGISTERED): entity=user 정보 및 총 금액
         var newUserOrderEntity=userOrderService.order(userOrderEntity);

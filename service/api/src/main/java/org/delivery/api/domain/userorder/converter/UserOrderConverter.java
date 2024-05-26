@@ -13,7 +13,7 @@ import java.util.List;
 @Converter
 public class UserOrderConverter {
 
-    public UserOrderEntity toEntity(User user, List<StoreMenuEntity> storeMenuEntityList){
+    public UserOrderEntity toEntity(User user, Long storeId, List<StoreMenuEntity> storeMenuEntityList){
 
         //메뉴의 총 금액
         var totalAmount=storeMenuEntityList.stream()
@@ -22,6 +22,7 @@ public class UserOrderConverter {
 
         return UserOrderEntity.builder()
                 .userId(user.getId())
+                .storeId(storeId)
                 .amount(totalAmount)
                 .build();
     }
