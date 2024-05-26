@@ -1,24 +1,34 @@
 package org.delivery.storeadmin.domain.sse.connection.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 import org.delivery.storeadmin.domain.sse.connection.ifs.ConnectionPoosIfs;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
 public class UserSseConnection {
 
-    private String uniqueKey;
+    private final String uniqueKey;
 
-    private SseEmitter sseEmitter;
+    private final SseEmitter sseEmitter;
 
-    private ConnectionPoosIfs<String, UserSseConnection> connectionPoosIfs;
+    private final ConnectionPoosIfs<String, UserSseConnection> connectionPoosIfs;
+
+    private final ObjectMapper objectMapper;
 
     //기본  생성자
     private UserSseConnection(
             String uniqueKey, ConnectionPoosIfs<String,
-            UserSseConnection> connectionPoosIfs){
+            UserSseConnection> connectionPoosIfs,
+            ObjectMapper objectMapper){
 
         //key 초기화
         this.uniqueKey=uniqueKey;
@@ -28,6 +38,9 @@ public class UserSseConnection {
 
         //ConnectionPoosIfs 초기화
         this.connectionPoosIfs = connectionPoosIfs;
+
+        //object mapper 초기화
+        this.objectMapper = objectMapper;
 
         //on completion
         this.sseEmitter.onCompletion(()->{
@@ -46,20 +59,35 @@ public class UserSseConnection {
 
     public static UserSseConnection connect(
             String uniqueKey,
-            ConnectionPoosIfs<String, UserSseConnection> connectionPoosIfs){
-        return new UserSseConnection(uniqueKey, connectionPoosIfs);
+            ConnectionPoosIfs<String, UserSseConnection> connectionPoosIfs,
+            ObjectMapper objectMapper){
+        return new UserSseConnection(uniqueKey, connectionPoosIfs, objectMapper);
     }
 
-    public void sendMessage(String eventName, Object data){
-        var event = SseEmitter.event()
-                .name(eventName)
-                .data(data);
+    public void sendMessage(String eventName, Object data) {
+
         try {
+            var json = this.objectMapper.writeValueAsString(data);
+
+            var event = SseEmitter.event()
+                    .name(eventName)
+                    .data(json);
+
+            this.sseEmitter.send(event);
+
+        } catch (IOException e) {
+            this.sseEmitter.completeWithError(e);
+        }
+    }
+
+    public void sendMessage(Object data) {
+        try {
+            var json = this.objectMapper.writeValueAsString(data);
+            var event = SseEmitter.event()
+                    .data(json);
             this.sseEmitter.send(event);
         } catch (IOException e) {
             this.sseEmitter.completeWithError(e);
         }
-
-
     }
 }
