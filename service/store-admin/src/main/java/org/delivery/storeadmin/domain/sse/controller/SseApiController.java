@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.storeadmin.domain.authorization.model.UserSession;
+import org.delivery.storeadmin.domain.sse.connection.SseConnectionPool;
+import org.delivery.storeadmin.domain.sse.connection.model.UserSseConnection;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SseApiController {
 
     private static final Map<String, SseEmitter> userConnection = new ConcurrentHashMap<>();
+    private final SseConnectionPool sseConnectionPool;
 
     @GetMapping(path="/connect",produces = MediaType.TEXT_EVENT_STREAM_VALUE) //, 제공하는 미디어 타입
     public ResponseBodyEmitter connect(
@@ -30,8 +33,11 @@ public class SseApiController {
             @AuthenticationPrincipal UserSession userSession
     ){
         log.info("login user {}",userSession);
+
         var emitter = new SseEmitter(1000L * 60); //클라이언트와 연결된 SSE 연결 성립. ms 단위롤 timeout 시간 설정(기본: 30초)
         userConnection.put(userSession.getUserId().toString(),emitter);
+
+        var temp = UserSseConnection.connect(userSession.getStoreId().toString(), sseConnectionPool);
 
         //sse 연결 후, callback 메소드의 역할은
         emitter.onTimeout(()->{
