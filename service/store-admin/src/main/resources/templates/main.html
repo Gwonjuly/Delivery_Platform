@@ -7,10 +7,25 @@
 <body>
     <h1> MAIN PAGE</h1>
 <!--thymeleaf 문법-->
-    <h1 th:text="${#authentication.name}"></h1> <br><!--AuthorizationService의 UserDetail 제공-->
+<!--    <h1 th:text="${#authentication.name}"></h1> <br>&lt;!&ndash;AuthorizationService의 UserDetail 제공&ndash;&gt;-->
 <!--    결과: MAIN PAGE, master@naver.com-->
-    <h1 th:text="${#authentication.principal.storeName}"></h1> <br>
+    <!--<h1 th:text="${#authentication.principal.storeName}"></h1> <br>
     <h1 th:text="${#authentication.principal.role}"></h1> <br>
-    <h1 th:text="${#authentication}"></h1> <br>
+    <h1 th:text="${#authentication}"></h1> <br>-->
 </body>
+<script>
+    const url = "http://localhost:8081/api/sse/connect";    //접속 주소
+    const eventSource = new EventSource(url);               //sse 연결
+
+    eventSource.onopen = (event) => {
+        console.log("sse connection");
+        console.log(event);
+    }
+
+    //서버로부터 받은 데이터 이쪽으로 들어도록 설정
+    eventSource.onmessage = event => {
+        console.log("receive data: " + event.data);
+    }
+
+</script>
 </html>
