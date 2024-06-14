@@ -1,15 +1,11 @@
 package org.delivery.api.domain.userorder.service;
 
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.RequiredTypes;
-import org.delivery.api.common.error.ErrorCode;
-import org.delivery.api.common.error.ErrorCodeIfs;
-import org.delivery.api.exception.ApiException;
-import org.delivery.db.user.UserEntity;
+import org.delivery.common.error.ErrorCode;
+import org.delivery.common.exception.ApiException;
 import org.delivery.db.userorder.UserOrderEntity;
 import org.delivery.db.userorder.UserOrderRepository;
 import org.delivery.db.userorder.enums.UserOrderStatus;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

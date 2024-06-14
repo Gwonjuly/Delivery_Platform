@@ -1,4 +1,4 @@
-package org.delivery.api.common.annotation;
+package org.delivery.common.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

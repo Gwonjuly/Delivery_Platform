@@ -1,12 +1,11 @@
 package org.delivery.api.domain.userordermenu.service;
 
 import lombok.RequiredArgsConstructor;
-import org.delivery.api.common.error.ErrorCode;
-import org.delivery.api.exception.ApiException;
+import org.delivery.common.error.ErrorCode;
+import org.delivery.common.exception.ApiException;
 import org.delivery.db.userordermenu.UserOrderMenuEntity;
 import org.delivery.db.userordermenu.UserOrderMenuRepository;
 import org.delivery.db.userordermenu.enums.UserOrderMenuStatus;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

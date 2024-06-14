@@ -21,6 +21,24 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
     //testImplementation 'org.junit.juptier:junit-jupiter-api:5.8.1'
     //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engines:5.8.1'
+
+    //validation
+    // https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api
+    implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '2.0.2'
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-core
+    implementation group: 'org.springframework', name: 'spring-core', version: '5.3.27'
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-context
+    implementation group: 'org.springframework', name: 'spring-context', version: '5.3.27'
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-web
+    implementation group: 'org.springframework', name: 'spring-web', version: '5.3.27'
+
+    // https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api
+    implementation group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '2.2.3'
+
+
 }
 
 test {

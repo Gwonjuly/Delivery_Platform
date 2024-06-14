@@ -1,4 +1,4 @@
-package org.delivery.api.common.error;
+package org.delivery.common.error;
 
 public interface ErrorCodeIfs {
     Integer getHttpStatusCode();
