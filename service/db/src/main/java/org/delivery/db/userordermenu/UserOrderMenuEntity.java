@@ -6,9 +6,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
+import org.delivery.db.storemenu.StoreMenuEntity;
+import org.delivery.db.userorder.UserOrderEntity;
 import org.delivery.db.userordermenu.enums.UserOrderMenuStatus;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,13 +22,16 @@ import javax.persistence.*;
 @Table(name="user_order_menu")
 public class UserOrderMenuEntity extends BaseEntity {
 
-    @Column(nullable = false)
-    private Long userOrderId;// 1(user_order) : N(user_order_id)
+    @JoinColumn (nullable = false, name = "user_order_id")
+    @ManyToOne
+    private UserOrderEntity userOrder;// 1(user_order) : N(user_order_menu)
 
-    @Column(nullable = false)
-    private Long storeMenuId;// 1(store_menu) : N(store_menu_id)
+    @JoinColumn(nullable = false) //name ="store_menu_id"
+    @ManyToOne
+    private StoreMenuEntity storeMenu;// N(user_order_menu) : 1(store_menu_id)
 
     @Enumerated(EnumType.STRING)
     @Column(length = 50,nullable = false)
     private UserOrderMenuStatus status;
+
 }
