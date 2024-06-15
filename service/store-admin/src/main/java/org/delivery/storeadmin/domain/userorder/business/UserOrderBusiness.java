@@ -43,7 +43,7 @@ public class UserOrderBusiness {
         //user_order_menu -> store_menu
         var storeMenuResponseList = userOrderMenuList.stream()
                 .map(userOrderMenuEntity->{
-                    return storeMenuService.getStoreMenuWithThrow(userOrderMenuEntity.getStoreMenuId()); //storeMenuEntityList
+                    return storeMenuService.getStoreMenuWithThrow(userOrderMenuEntity.getStoreMenu().getId()); //storeMenuEntityList
                 })
                 .map(storeMenuEntity->{
                     return storeMenuConverter.toResponse(storeMenuEntity);
@@ -58,7 +58,7 @@ public class UserOrderBusiness {
                 .build();
 
         //연결된 세션 찾기(가게와 연결되어 있는 커넥션)
-        var userConnection = sseConnectionPool.getSession(userOrderEntity.getStoreId().toString());
+        var userConnection = sseConnectionPool.getSession(userOrderEntity.getStore().getId().toString());
 
         //스토어에게 push
         userConnection.sendMessage(push);
