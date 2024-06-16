@@ -1,14 +1,14 @@
 server:
   port: 9090
 
-spirng:
+spring:
   cloud:
     gateway:
       routes:
-        - id: public-serviceapi #이름
+        - id: public-service-api #이름
           uri: http://localhost:8080 #api 서버 주소
           predicates:
             - Path=/service-api/open-api/**
           filters:
-            - RewritePath="/service-api(?<segment>/?.*)", "$\{segment}"
-            - ServiceApiFilter
+            - RewritePath=/service-api(?<segment>/?.*), $\{segment}
+            - ServicePublicApiFilter
