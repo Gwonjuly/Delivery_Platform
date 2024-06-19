@@ -43,20 +43,17 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
 
         // TODO header 검증
-        var accessToken=request.getHeader("authorization-token");
-        if(accessToken==null){
-            throw new ApiException(TokenErrorCode.AUTHORIZATION_TOKEN_NOT_FOUND);
+        var userId=request.getHeader("x-user-id");
+        if(userId==null){
+            throw new ApiException(ErrorCode.BAD_REQUEST,"x-user-id 헤더 없음");
         }
-
-        var userId=tokenBusiness.validationAccessToken(accessToken);//값이 없었으면 전단게에서 throw 터졌음
 
         //검증 완료 후, userId 저장함 어디에? requestContext: Local Thread로 하나의 리퀘스트에 대해 유효하게 글로벌하게 저장할 수 있는 영역
-        if(userId!=null) {
-            var requestContext = Objects.requireNonNull(RequestContextHolder.getRequestAttributes());
-            requestContext.setAttribute("userId", userId, RequestAttributes.SCOPE_REQUEST);//requestContext 영역에 리퀘스트 단위로 userId 저장
-            return true;
-        }
-        throw new ApiException(ErrorCode.BAD_REQUEST,"인증 실패");
+        var requestContext = Objects.requireNonNull(RequestContextHolder.getRequestAttributes());
+        requestContext.setAttribute("userId", userId, RequestAttributes.SCOPE_REQUEST);//requestContext 영역에 리퀘스트 단위로 userId 저장
+
+        return true;
+
         /** 인터셉터 역할
          * 1. authorization-token GET 후 검증
          * 2. RequestContextHolder를 통해 SCOPE_REQUEST에 userId 등록
