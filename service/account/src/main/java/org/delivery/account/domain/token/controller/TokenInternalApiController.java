@@ -20,7 +20,10 @@ public class TokenInternalApiController {
 
     @PostMapping("/validation")
     public TokenValidationResponse tokenValidation(@RequestBody TokenValidationRequest request){
+        log.info("request: {}",request);
         log.info("token validation init: {}",request);
-        return tokenBusiness.tokenValidation(request.getTokenDto());
+        var result = tokenBusiness.tokenValidation(request);
+        log.info("result: {}",result);
+        return tokenBusiness.tokenValidation(request);
     }
 }
