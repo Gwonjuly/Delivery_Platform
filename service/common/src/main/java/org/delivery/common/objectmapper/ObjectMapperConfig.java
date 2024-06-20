@@ -1,4 +1,4 @@
-package org.delivery.storeadmin.config.objectmapper;
+package org.delivery.common.objectmapper;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
