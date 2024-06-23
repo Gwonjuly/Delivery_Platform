@@ -1,4 +1,4 @@
-package org.delivery.api.domain.store.controller.model;
+package org.delivery.storeadmin.domain.store.controller.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

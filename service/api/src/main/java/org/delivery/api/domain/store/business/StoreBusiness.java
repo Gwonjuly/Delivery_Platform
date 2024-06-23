@@ -2,7 +2,6 @@ package org.delivery.api.domain.store.business;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.common.annotation.Business;
-import org.delivery.api.domain.store.controller.model.StoreRegisterRequest;
 import org.delivery.api.domain.store.controller.model.StoreResponse;
 import org.delivery.api.domain.store.converter.StoreConverter;
 import org.delivery.api.domain.store.service.StoreService;
@@ -17,14 +16,6 @@ public class StoreBusiness {
 
     private final StoreService storeService;
     private final StoreConverter storeConverter;
-
-    //등록 요청
-    public StoreResponse register(StoreRegisterRequest storeRegisterRequest){
-        var entity=storeConverter.toEntity(storeRegisterRequest);
-        var newEntity=storeService.register(entity);
-        var response=storeConverter.toResponse(newEntity);
-        return response;
-    }
 
     //등록된 스토어 조회
     public List<StoreResponse> searchCategory (StoreCategory storeCategory){

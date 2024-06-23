@@ -24,18 +24,6 @@ public class StoreService {
         return entity.orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }
 
-    //스토어 등록하기
-    public StoreEntity register(StoreEntity storeEntity){
-        return Optional.ofNullable(storeEntity)//ofNullable: null 허용
-                .map(it->{
-                    it.setStar(0);
-                    it.setStatus(StoreStatus.REGISTERED);
-                    //todo 등록 일시 추가하기
-                    return storeRepository.save(it);
-                })
-                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
-    }
-
     //카테고리로 스토어 검색
     public List<StoreEntity> searchByCategory(StoreCategory storeCategory){
         var list=storeRepository.findAllByStatusAndCategoryOrderByStarDesc(StoreStatus.REGISTERED,storeCategory);
