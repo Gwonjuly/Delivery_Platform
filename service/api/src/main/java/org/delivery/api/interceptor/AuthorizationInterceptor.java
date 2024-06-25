@@ -42,7 +42,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         if(handler instanceof ResourceHttpRequestHandler)
             return true;
 
-        // TODO header 검증
         var userId=request.getHeader("x-user-id");
         if(userId==null){
             throw new ApiException(ErrorCode.BAD_REQUEST,"x-user-id 헤더 없음");

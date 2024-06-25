@@ -20,19 +20,6 @@ public class TokenService {
 
     private final TokenHelperIfs tokenHelperIfs;
 
-    //토큰 헬퍼를 통해 issueAccessToken 생성: 내부에서 토큰을 발행
-    public TokenDto issueAccessToken(Long userId){
-        var data=new HashMap<String ,Object>();
-        data.put("userId",userId);
-        return tokenHelperIfs.issueAccessToken(data);
-    }
-
-    public TokenDto issueRefreshToken(Long userId){
-        var data=new HashMap<String ,Object>();
-        data.put("useId",userId);
-        return tokenHelperIfs.issueRefreshToken(data);
-    }
-
     //return userId
     public Long validationToken(String token){
         var map=tokenHelperIfs.validationTokenWithThrow(token);
