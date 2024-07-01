@@ -1,4 +1,4 @@
-package org.delivery.api.domain.storemenu.controller.model;
+package org.delivery.storeadmin.domain.storemenu.controller.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StoreMenuRegisterRequest{
+public class StoreMenuRegisterRequest {
 
     @NotNull
     private Long storeId;

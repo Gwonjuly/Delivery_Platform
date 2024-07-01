@@ -1,4 +1,4 @@
-package org.delivery.apigw.config.objectmapper;
+package org.delivery.account.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

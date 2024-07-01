@@ -2,7 +2,6 @@ package org.delivery.api.domain.storemenu.converter;
 
 import org.delivery.common.annotation.Converter;
 import org.delivery.common.error.ErrorCode;
-import org.delivery.api.domain.storemenu.controller.model.StoreMenuRegisterRequest;
 import org.delivery.api.domain.storemenu.controller.model.StoreMenuResponse;
 import org.delivery.common.exception.ApiException;
 import org.delivery.db.store.StoreEntity;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
 @Converter
 public class StoreMenuConverter {
 
-    public StoreMenuEntity toEntity(StoreMenuRegisterRequest request, StoreEntity storeEntity){
+   /* public StoreMenuEntity toEntity(StoreMenuRegisterRequest request, StoreEntity storeEntity){
         return Optional.ofNullable(request)
                 .map(it->{
                     return StoreMenuEntity.builder()
@@ -26,7 +25,7 @@ public class StoreMenuConverter {
                             .build();
                 })
                 .orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT));
-    }
+    }*/
 
     public StoreMenuResponse toResponse(StoreMenuEntity entity){
         return Optional.ofNullable(entity)

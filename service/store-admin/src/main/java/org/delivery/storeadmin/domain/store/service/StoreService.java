@@ -29,4 +29,9 @@ public class StoreService {
                 })
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }
+
+    public StoreEntity getStoreWithThrow(Long id){
+        var entity = storeRepository.findFirstByIdAndStatusOrderByIdDesc(id, StoreStatus.REGISTERED);
+        return entity.orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT,"등록된 가게가 없습니다"));
+    }
 }
