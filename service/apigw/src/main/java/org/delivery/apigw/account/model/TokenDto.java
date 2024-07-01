@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TokenDto {
 
     private String token;
