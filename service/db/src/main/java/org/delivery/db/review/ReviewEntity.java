@@ -58,5 +58,7 @@ public class ReviewEntity extends BaseEntity {
 
     private LocalDateTime replyUpdatedAt; //사장님 댓글 수정 일시
 
-
+    /*public static ReviewEntity of(UserOrderEntity userOrderEntity, UserEntity userEntity, StoreEntity storeEntity, String reviewText) {
+        return new ReviewEntity(userOrderEntity, userEntity, storeEntity,reviewText);
+    }*/
 }

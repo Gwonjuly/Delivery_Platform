@@ -2,6 +2,8 @@ package org.delivery.db.review;
 
 import com.querydsl.core.types.dsl.SimpleExpression;
 import org.delivery.db.review.enums.ReviewStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -16,6 +18,11 @@ public interface ReviewRepository extends
         QuerydslBinderCustomizer<QReviewEntity>
 
 {
+    //Page<ReviewEntity> findByUserEntity_UserId
+    Page<ReviewEntity> findByUserId(Long userId, Pageable pageable);
+    Page<ReviewEntity> findByStoreId(Long storeId, Pageable pageable);
+    Page<ReviewEntity> findByUserOrderId(Long userOrderId, Pageable pageable);
+
     @Override
     default void customize(QuerydslBindings bindings, QReviewEntity root){
         bindings.excludeUnlistedProperties(true);

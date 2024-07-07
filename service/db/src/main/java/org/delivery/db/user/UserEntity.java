@@ -10,7 +10,9 @@ import org.delivery.db.user.enums.UserStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity//(name="user") 아래와 비슷
 @Table(name="user")
@@ -44,5 +46,6 @@ public class UserEntity extends BaseEntity {
     @ToString.Exclude
     @JsonIgnore
     @OrderBy("reviewCreatedAt")
-    private List<ReviewEntity> reviewEntityList;
+    private Set<ReviewEntity> reviewEntitySet = new HashSet<>();
+    //private List<ReviewEntity> reviewEntityList;
 }
