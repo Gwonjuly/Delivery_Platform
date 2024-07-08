@@ -3,7 +3,7 @@ package org.delivery.api.domain.review.service;
 import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.delivery.api.domain.review.controller.model.ReviewEntityDtoRecord;
+
 import org.delivery.common.error.ErrorCode;
 import org.delivery.common.exception.ApiException;
 import org.delivery.db.review.ReviewEntity;
@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -32,10 +33,9 @@ public class ReviewService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public ReviewEntityDtoRecord userOrderReview(Long userOrderId) {
-        //return ReviewEntityDto.of(null);
-        //return List.of(ReviewEntityDto.of(5,"맛있어요", ReviewStatus.REGISTERED, LocalDateTime.now()));
-        return null;
+    public Optional<ReviewEntity> getUserOrderReview(Long userOrderId) {
+        return reviewRepository.findByUserOrderId(userOrderId);
+        //return null;
     }
 
     // 유저 리뷰 검색

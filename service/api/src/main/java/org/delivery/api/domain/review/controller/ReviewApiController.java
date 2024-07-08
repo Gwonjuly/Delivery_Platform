@@ -38,7 +38,7 @@ public class ReviewApiController {
         //return (ReviewDetailResponse) responses;
     }
 
-   /* @GetMapping("/form/id/{userOrderId}")
+    @GetMapping("/form/id/{userOrderId}")
     public ModelAndView formReview(
             @Parameter(hidden = true)
             @UserSession User user,
@@ -53,7 +53,7 @@ public class ReviewApiController {
         model.addObject("review", response);
         model.setViewName("review/form");
         return model;
-    }*/
+    }
 
     /*@PostMapping("/save")
     public ReviewResponse saveReview(

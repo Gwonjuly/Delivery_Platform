@@ -21,7 +21,7 @@ public interface ReviewRepository extends
     //Page<ReviewEntity> findByUserEntity_UserId
     Page<ReviewEntity> findByUserId(Long userId, Pageable pageable);
     Page<ReviewEntity> findByStoreId(Long storeId, Pageable pageable);
-    Page<ReviewEntity> findByUserOrderId(Long userOrderId, Pageable pageable);
+    Optional<ReviewEntity> findByUserOrderId(Long userOrderId);
 
     @Override
     default void customize(QuerydslBindings bindings, QReviewEntity root){

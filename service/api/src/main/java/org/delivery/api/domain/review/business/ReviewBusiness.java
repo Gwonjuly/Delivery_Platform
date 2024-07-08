@@ -64,7 +64,7 @@ public class ReviewBusiness {
         //return (Page<ReviewDetailResponse>) reviewResponsePage;
     }
 
-    /*@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public ReviewDetailResponse formReview(User user, Long userOrderId) {
         //유저 오더 ID로 리뷰 작성 페이지 요청  받기
         //유저 오더 ID로 해당 리뷰의 등록 여부 확인
@@ -105,7 +105,7 @@ public class ReviewBusiness {
                         .storeMenuResponseList(storeMenuConverter.toResponse(storeMenuEntityList))
                         .build();
         }
-    }*/
+    }
 
     //void
    /* public ReviewResponse saveReview(User user, ReviewRequest reviewRequest){

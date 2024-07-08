@@ -1,5 +1,6 @@
 package org.delivery.api.domain.user.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.delivery.common.annotation.UserSession;
 import org.delivery.common.api.Api;
@@ -20,7 +21,7 @@ public class UserApiController {
 
     //로그인한 사용자 호출
     @GetMapping("/me")
-    public Api<UserResponse> me(@UserSession User user){
+    public Api<UserResponse> me(@Parameter(hidden = true) @UserSession User user){
 
         //AuthorizationInterceptor에서 토큰 인증 후, 저장한 userId 호출
         /*var requestContext= Objects.requireNonNull(RequestContextHolder.getRequestAttributes());

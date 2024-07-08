@@ -10,8 +10,7 @@ import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserOrderRepository extends
-        JpaRepository<UserOrderEntity, Long>
+public interface UserOrderRepository extends JpaRepository<UserOrderEntity, Long>
 /*        QuerydslPredicateExecutor<UserOrderEntity>,
         QuerydslBinderCustomizer<QUserOrderEntity>*/
 {

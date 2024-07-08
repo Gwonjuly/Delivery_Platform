@@ -25,6 +25,9 @@ public class UserOrderService {
         return userOrderRepository.findAllByIdAndUserId(id,userId)
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }
+    public Optional<UserOrderEntity> getUserOrder(Long userOrderId){
+        return userOrderRepository.findById(userOrderId);
+    }
 
     //특정 유저의 특정 주문 가져오기
     @Transactional(readOnly = true)
