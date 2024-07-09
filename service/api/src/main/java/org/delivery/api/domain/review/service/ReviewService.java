@@ -50,10 +50,16 @@ public class ReviewService {
     }
 
     //리뷰 생성
-    public void saveReview(ReviewEntity reviewEntity){
+    public ReviewEntity saveReview(ReviewEntity reviewEntity){
         reviewEntity.setStatus(ReviewStatus.REGISTERED);
         reviewEntity.setReviewCreatedAt(LocalDateTime.now());
-        reviewRepository.save(reviewEntity);
+        return reviewRepository.save(reviewEntity);
+    }
+
+    //리뷰 ID로 리뷰 검색
+    public ReviewEntity getReview(Long reviewId){
+        return reviewRepository.findById(reviewId)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     //리뷰 수정

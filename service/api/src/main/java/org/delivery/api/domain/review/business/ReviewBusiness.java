@@ -2,8 +2,9 @@ package org.delivery.api.domain.review.business;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.domain.review.controller.model.ReviewDetailResponse;
-import org.delivery.api.domain.review.controller.model.ReviewRequest;
+import org.delivery.api.domain.review.controller.model.ReviewRegisterRequest;
 import org.delivery.api.domain.review.controller.model.ReviewResponse;
+import org.delivery.api.domain.review.controller.model.ReviewUpdateRequest;
 import org.delivery.api.domain.review.converter.ReviewConverter;
 import org.delivery.api.domain.review.service.ReviewService;
 import org.delivery.api.domain.store.converter.StoreConverter;
@@ -13,9 +14,6 @@ import org.delivery.api.domain.user.model.User;
 import org.delivery.api.domain.user.service.UserService;
 import org.delivery.api.domain.userorder.service.UserOrderService;
 import org.delivery.common.annotation.Business;
-import org.delivery.db.review.ReviewEntity;
-import org.delivery.db.review.enums.ReviewStatus;
-import org.delivery.db.user.UserEntity;
 import org.delivery.db.userordermenu.enums.UserOrderMenuStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -112,12 +112,27 @@ public class ReviewBusiness {
     }
 
     //void, storename, userorderid, star,review text
-    public void saveReview(User user, ReviewRequest reviewRequest){
-        var storeEntity = storeService.searchByStoreName(reviewRequest.getStoreName());
-        var userOrderEntity = userOrderService.getUserOrder(reviewRequest.getUserOrderId());
+    public ReviewResponse saveReview(User user, ReviewRegisterRequest reviewRegisterRequest){
+        var storeEntity = storeService.searchByStoreName(reviewRegisterRequest.getStoreName());
+        var userOrderEntity = userOrderService.getUserOrder(reviewRegisterRequest.getUserOrderId());
         var userEntity = userService.getUserWithThrow(user.getId());
-        var reviewEntity = reviewConverter.toEntity(reviewRequest, userEntity,userOrderEntity.get(),storeEntity.get());
-        reviewService.saveReview(reviewEntity);
+        var reviewEntity = reviewConverter.toEntity(reviewRegisterRequest, userEntity,userOrderEntity.get(),storeEntity.get());
+        var newReviewEntity = reviewService.saveReview(reviewEntity);
+        return reviewConverter.toResponse(newReviewEntity);
         //save 시, user/userorder/service 엔티티 저장 필요
+    }
+
+    public ReviewResponse updateReview(User user, ReviewUpdateRequest reviewUpdateRequest) {
+        var reviewEntity = reviewService.getReview(reviewUpdateRequest.getReviewId());
+        var newReviewEntity = Optional.ofNullable(reviewEntity)
+                .map(it-> {
+                    it.setStar(reviewUpdateRequest.getStar());
+                    it.setReviewText(reviewUpdateRequest.getReviewText());
+                    it.setReviewUpdatedAt(LocalDateTime.now());
+                    reviewService.updateReview(it);
+                    return it;
+                })
+                .orElseThrow(EntityNotFoundException::new);
+        return reviewConverter.toResponse(newReviewEntity);
     }
 }

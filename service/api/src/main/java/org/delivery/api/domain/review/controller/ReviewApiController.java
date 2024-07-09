@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.api.domain.review.business.ReviewBusiness;
 import org.delivery.api.domain.review.controller.model.FormStatus;
-import org.delivery.api.domain.review.controller.model.ReviewRequest;
+import org.delivery.api.domain.review.controller.model.ReviewRegisterRequest;
 import org.delivery.api.domain.review.controller.model.ReviewResponse;
+import org.delivery.api.domain.review.controller.model.ReviewUpdateRequest;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.common.annotation.UserSession;
-import org.delivery.db.review.enums.ReviewStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -62,24 +62,26 @@ public class ReviewApiController {
     }
 
     @PostMapping("/save")
-    public ModelAndView saveReview(
+    public ReviewResponse saveReview(
             @Parameter(hidden = true)
             @UserSession User user,
-            @RequestBody ReviewRequest reviewRequest
+            @RequestBody ReviewRegisterRequest reviewRegisterRequest
             ){
         ModelAndView model = new ModelAndView();
-        reviewBusiness.saveReview(user,reviewRequest);
+        var response = reviewBusiness.saveReview(user, reviewRegisterRequest);
         model.setViewName("review/view");
-        return model;
+        //return model;
+        return response;
     }
 
     @PostMapping("update/id/{reviewId}")
-    public ModelAndView updateReview(
+    public ReviewResponse updateReview(
             @Parameter(hidden = true)
             @UserSession User user,
-            @RequestBody ReviewRequest reviewRequest
+            @RequestBody ReviewUpdateRequest reviewUpdateRequest
     ){
         ModelAndView model = new ModelAndView();
-        return null;
+        var response = reviewBusiness.updateReview(user, reviewUpdateRequest);
+        return response;
     }
 }

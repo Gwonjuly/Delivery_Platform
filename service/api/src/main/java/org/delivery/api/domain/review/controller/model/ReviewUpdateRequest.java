@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewRequest {
-    private String storeName;
-    private Long userOrderId;
+public class ReviewUpdateRequest {
+    private Long reviewId;
     private double star;
     private String reviewText;
 }
