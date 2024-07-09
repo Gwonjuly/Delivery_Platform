@@ -50,7 +50,6 @@ public class ReviewService {
     }
 
     //리뷰 생성
-    @Transactional(readOnly = true)
     public void saveReview(ReviewEntity reviewEntity){
         reviewEntity.setStatus(ReviewStatus.REGISTERED);
         reviewEntity.setReviewCreatedAt(LocalDateTime.now());

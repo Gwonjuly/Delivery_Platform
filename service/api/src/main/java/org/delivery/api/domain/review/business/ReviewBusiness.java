@@ -7,8 +7,10 @@ import org.delivery.api.domain.review.controller.model.ReviewResponse;
 import org.delivery.api.domain.review.converter.ReviewConverter;
 import org.delivery.api.domain.review.service.ReviewService;
 import org.delivery.api.domain.store.converter.StoreConverter;
+import org.delivery.api.domain.store.service.StoreService;
 import org.delivery.api.domain.storemenu.converter.StoreMenuConverter;
 import org.delivery.api.domain.user.model.User;
+import org.delivery.api.domain.user.service.UserService;
 import org.delivery.api.domain.userorder.service.UserOrderService;
 import org.delivery.common.annotation.Business;
 import org.delivery.db.review.ReviewEntity;
@@ -34,6 +36,8 @@ public class ReviewBusiness {
     private final StoreMenuConverter storeMenuConverter;
     private final ReviewConverter reviewConverter;
     private final UserOrderService userOrderService;
+    private final StoreService storeService;
+    private final UserService userService;
 
     @Transactional(readOnly = true)
     public Page<ReviewDetailResponse> view(User user, Pageable pageable) {
@@ -107,9 +111,13 @@ public class ReviewBusiness {
         }
     }
 
-    //void
-   /* public ReviewResponse saveReview(User user, ReviewRequest reviewRequest){
-        //
-        var reviewEntity = reviewConverter.toEntity(reviewRequest);
-    }*/
+    //void, storename, userorderid, star,review text
+    public void saveReview(User user, ReviewRequest reviewRequest){
+        var storeEntity = storeService.searchByStoreName(reviewRequest.getStoreName());
+        var userOrderEntity = userOrderService.getUserOrder(reviewRequest.getUserOrderId());
+        var userEntity = userService.getUserWithThrow(user.getId());
+        var reviewEntity = reviewConverter.toEntity(reviewRequest, userEntity,userOrderEntity.get(),storeEntity.get());
+        reviewService.saveReview(reviewEntity);
+        //save 시, user/userorder/service 엔티티 저장 필요
+    }
 }

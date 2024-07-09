@@ -4,6 +4,9 @@ import org.delivery.api.domain.review.controller.model.ReviewRequest;
 import org.delivery.api.domain.review.controller.model.ReviewResponse;
 import org.delivery.common.annotation.Converter;
 import org.delivery.db.review.ReviewEntity;
+import org.delivery.db.store.StoreEntity;
+import org.delivery.db.user.UserEntity;
+import org.delivery.db.userorder.UserOrderEntity;
 
 @Converter
 public class ReviewConverter {
@@ -29,6 +32,13 @@ public class ReviewConverter {
                 .build();
     }
 
- /*   public ReviewEntity toEntity(ReviewRequest reviewRequest) {
-    }*/
+    public ReviewEntity toEntity(ReviewRequest reviewRequest, UserEntity userEntity, UserOrderEntity userOrderEntity, StoreEntity storeEntity) {
+        return ReviewEntity.builder()
+                .store(storeEntity)
+                .user(userEntity)
+                .userOrder(userOrderEntity)
+                .reviewText(reviewRequest.getReviewText())
+                .star(reviewRequest.getStar())
+                .build();
+    }
 }

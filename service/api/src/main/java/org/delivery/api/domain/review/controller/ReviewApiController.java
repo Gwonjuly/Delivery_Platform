@@ -4,10 +4,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.api.domain.review.business.ReviewBusiness;
+import org.delivery.api.domain.review.controller.model.FormStatus;
 import org.delivery.api.domain.review.controller.model.ReviewRequest;
 import org.delivery.api.domain.review.controller.model.ReviewResponse;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.common.annotation.UserSession;
+import org.delivery.db.review.enums.ReviewStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -51,19 +53,33 @@ public class ReviewApiController {
         // 미 등록 시, 가게 이름과 주문 내용 반환
         var response = reviewBusiness.formReview(user, userOrderId);
         model.addObject("review", response);
+        if(response.getReviewResponse() == null)
+            model.addObject("formStatus",FormStatus.CREATE);
+        else
+            model.addObject("formStatus", FormStatus.UPDATE);
         model.setViewName("review/form");
         return model;
     }
 
-    /*@PostMapping("/save")
-    public ReviewResponse saveReview(
+    @PostMapping("/save")
+    public ModelAndView saveReview(
             @Parameter(hidden = true)
             @UserSession User user,
             @RequestBody ReviewRequest reviewRequest
             ){
         ModelAndView model = new ModelAndView();
-        var response = reviewBusiness.saveReview(user,reviewRequest);
-        return null;
-    }*/
+        reviewBusiness.saveReview(user,reviewRequest);
+        model.setViewName("review/view");
+        return model;
+    }
 
+    @PostMapping("update/id/{reviewId}")
+    public ModelAndView updateReview(
+            @Parameter(hidden = true)
+            @UserSession User user,
+            @RequestBody ReviewRequest reviewRequest
+    ){
+        ModelAndView model = new ModelAndView();
+        return null;
+    }
 }
