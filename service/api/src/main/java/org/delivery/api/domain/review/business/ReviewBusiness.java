@@ -14,6 +14,7 @@ import org.delivery.api.domain.user.model.User;
 import org.delivery.api.domain.user.service.UserService;
 import org.delivery.api.domain.userorder.service.UserOrderService;
 import org.delivery.common.annotation.Business;
+import org.delivery.db.review.ReviewRepository;
 import org.delivery.db.userordermenu.enums.UserOrderMenuStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,6 +39,7 @@ public class ReviewBusiness {
     private final UserOrderService userOrderService;
     private final StoreService storeService;
     private final UserService userService;
+    private final ReviewRepository reviewRepository;
 
     @Transactional(readOnly = true)
     public Page<ReviewDetailResponse> view(User user, Pageable pageable) {
@@ -135,4 +137,32 @@ public class ReviewBusiness {
                 .orElseThrow(EntityNotFoundException::new);
         return reviewConverter.toResponse(newReviewEntity);
     }
+
+    public void deleteReview(User user, Long reviewId) {
+        reviewService.deleteReview(reviewId);
+    }
+
+   /* @Transactional(readOnly = true)
+    public Page<ReviewDetailResponse> viewStoreReview(Long storeId,Pageable pageable) {
+        var storeReviewEntityPage = reviewService.getStoreReview(storeId,pageable);
+        var storeEntity = storeService.getStoreWithThrow(storeId);
+
+        var reviewResponsePage = storeReviewEntityPage.stream().map(reviewEntity -> {
+            var userOrderEntity = reviewEntity.getUserOrder();
+            var userOrderMenuList = userOrderEntity.getUserOrderMenuList().stream()
+                    .filter(it->it.getStatus().equals(UserOrderMenuStatus.REGISTERED))
+                    .collect(Collectors.toList());
+            var storeMenuEntityList = userOrderMenuList.stream()
+                    .map(it->it.getStoreMenu())
+                    .collect(Collectors.toList());
+
+            return ReviewDetailResponse.builder()
+                    .reviewResponse(reviewConverter.toResponse(reviewEntity))
+                    .storeMenuResponseList(storeMenuConverter.toResponse(storeMenuEntityList))
+                    .storeResponse(storeConverter.toResponse(storeEntity))
+                    .build();
+        }).collect(Collectors.toList());
+
+        return new PageImpl<>(reviewResponsePage);
+    }*/
 }
