@@ -94,7 +94,7 @@ public class ReviewApiController {
         reviewBusiness.deleteReview(user, reviewId);
     }
 
-    /*@GetMapping("/view/store-review/id/{storeId}")
+    @GetMapping("/view/store-review/id/{storeId}")
     public Page<ReviewDetailResponse> viewStoreReview(
             @Parameter(hidden = true)
             @UserSession User user,
@@ -104,9 +104,9 @@ public class ReviewApiController {
     ){
         ModelAndView model = new ModelAndView();
         var response = reviewBusiness.viewStoreReview(storeId, pageable);
-        *//*model.addObject("reviews", response);
-        model.setViewName("review/storeReview/view");*//*
+        model.addObject("reviews", response);
+        model.setViewName("review/storeReview/view");
         return response;
-    }*/
+    }
 
 }

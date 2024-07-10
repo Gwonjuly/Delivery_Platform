@@ -142,7 +142,7 @@ public class ReviewBusiness {
         reviewService.deleteReview(reviewId);
     }
 
-   /* @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Page<ReviewDetailResponse> viewStoreReview(Long storeId,Pageable pageable) {
         var storeReviewEntityPage = reviewService.getStoreReview(storeId,pageable);
         var storeEntity = storeService.getStoreWithThrow(storeId);
@@ -164,5 +164,5 @@ public class ReviewBusiness {
         }).collect(Collectors.toList());
 
         return new PageImpl<>(reviewResponsePage);
-    }*/
+    }
 }

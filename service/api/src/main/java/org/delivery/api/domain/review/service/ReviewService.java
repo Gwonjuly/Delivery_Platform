@@ -57,6 +57,7 @@ public class ReviewService {
     }
 
     //리뷰 ID로 리뷰 검색
+    @Transactional(readOnly = true)
     public ReviewEntity getReview(Long reviewId){
         return reviewRepository.findById(reviewId)
                 .orElseThrow(EntityNotFoundException::new);
