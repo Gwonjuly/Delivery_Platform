@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>One Order</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Julee">
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<main class="container">
+<h1>Order List</h1>
+<div>
+  <button id="allOrdersBtn">모든 주문</button>
+</div>
+<script>
+  // 모든 주문 버튼
+  document.getElementById("allOrdersBtn").addEventListener("click", function() {
+    window.location.href = "/api/user-order/view-all";
+  });
+
+</script>
+<table class="table">
+  <thead>
+  <tr>
+    <th>주문 번호</th>
+    <th>가게 이름</th>
+    <th>메뉴</th>
+    <th>주문 상태</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="order : ${orders}">
+    <td>
+      <!-- User Info -->
+       <p><strong>ID:</strong> <span th:text="${order.userOrderResponse.id}">User ID</span></p>
+       <!--<p><strong>Status:</strong> <span th:text="${order.userOrderResponse.status}">Status</span></p>-->
+       <p><strong>Amount:</strong> <span th:text="${order.userOrderResponse.amount}">Amount</span></p>
+       <!--<p><strong>Ordered At:</strong> <span th:text="${order.userOrderResponse.orderedAt}">Ordered At</span></p>
+       <p><strong>Accepted At:</strong> <span th:text="${order.userOrderResponse.acceptedAt}">Accepted At</span></p>
+       <p><strong>Cooking Started At:</strong> <span th:text="${order.userOrderResponse.cookingStartedAt}">Cooking Started At</span></p>
+       <p><strong>Delivery Started At:</strong> <span th:text="${order.userOrderResponse.deliveryStartedAt}">Delivery Started At</span></p>
+       <p><strong>Received At:</strong> <span th:text="${order.userOrderResponse.receivedAt}">Received At</span></p>-->
+    </td>
+    <td>
+      <!-- Store Info -->
+      <!--<p><strong>ID:</strong> <span th:text="${order.storeResponse.id}">Store ID</span></p>-->
+      <p><strong>Name:</strong> <span th:text="${order.storeResponse.name}">Store Name</span></p>
+      <!--<p><strong>Address:</strong> <span th:text="${order.storeResponse.address}">Store Address</span></p>
+      <p><strong>Status:</strong> <span th:text="${order.storeResponse.status}">Status</span></p>-->
+      <p><strong>Category:</strong> <span th:text="${order.storeResponse.category}">Category</span></p>
+      <!--<p><strong>Star Rating:</strong> <span th:text="${order.storeResponse.star}">Star Rating</span></p>-->
+      <p><strong>Thumbnail URL:</strong> <span th:text="${order.storeResponse.thumbnailUrl}">Thumbnail URL</span></p>
+      <!--<p><strong>Minimum Amount:</strong> <span th:text="${order.storeResponse.minimumAmount}">Minimum Amount</span></p>
+      <p><strong>Minimum Delivery Amount:</strong> <span th:text="${order.storeResponse.minimumDeliveryAmount}">Minimum Delivery Amount</span></p>
+      <p><strong>Phone Number:</strong> <span th:text="${order.storeResponse.phoneNumber}">Phone Number</span></p>-->
+    </td>
+    <td>
+      <!-- Menu Info -->
+      <ul>
+        <li th:each="menu : ${order.storeMenuResponseList}">
+          <!--<p><strong>ID:</strong> <span th:text="${menu.id}">Menu ID</span></p>
+          <p><strong>Store ID:</strong> <span th:text="${menu.storeId}">Store ID</span></p>-->
+          <p><strong>Name:</strong> <span th:text="${menu.name}">Menu Name</span></p>
+          <p><strong>Amount:</strong> <span th:text="${menu.amount}">Amount</span></p>
+          <!--<p><strong>Status:</strong> <span th:text="${menu.status}">Status</span></p>-->
+          <p><strong>Thumbnail URL:</strong> <span th:text="${menu.thumbnailUrl}">Thumbnail URL</span></p>
+          <!--<p><strong>Like Count:</strong> <span th:text="${menu.likeCount}">Like Count</span></p>
+          <p><strong>Sequence:</strong> <span th:text="${menu.sequence}">Sequence</span></p>-->
+        </li>
+      </ul>
+    </td>
+    <td>
+      <p><strong>Ordered At:</strong> <span th:text="${#temporals.format(order.userOrderResponse.orderedAt,'yyyy-MM-dd')}">Ordered At</span></p>
+      <p><strong>Accepted At:</strong> <span th:text="${#temporals.format(order.userOrderResponse.acceptedAt,'yyyy-MM-dd')}">Accepted At</span></p>
+      <p><strong>Cooking Started At:</strong> <span th:text="${#temporals.format(order.userOrderResponse.cookingStartedAt,'yyyy-MM-dd')}">Cooking Started At</span></p>
+      <p><strong>Delivery Started At:</strong> <span th:text="${#temporals.format(order.userOrderResponse.deliveryStartedAt,'yyyy-MM-dd')}">Delivery Started At</span></p>
+      <p><strong>Received At:</strong> <span th:text="${#temporals.format(order.userOrderResponse.receivedAt,'yyyy-MM-dd')}">Received At</span></p>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

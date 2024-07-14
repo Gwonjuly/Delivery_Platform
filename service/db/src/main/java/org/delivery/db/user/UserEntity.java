@@ -1,16 +1,18 @@
 package org.delivery.db.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import net.bytebuddy.implementation.bind.annotation.Super;
 import org.delivery.db.BaseEntity;
+import org.delivery.db.review.ReviewEntity;
 import org.delivery.db.user.enums.UserStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity//(name="user") 아래와 비슷
 @Table(name="user")
@@ -39,4 +41,11 @@ public class UserEntity extends BaseEntity {
     private LocalDateTime registeredAt;
     private LocalDateTime unregisteredAt;
     private LocalDateTime lastLoginAt;
+
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @JsonIgnore
+    @OrderBy("reviewCreatedAt")
+    private Set<ReviewEntity> reviewEntitySet = new HashSet<>();
+    //private List<ReviewEntity> reviewEntityList;
 }

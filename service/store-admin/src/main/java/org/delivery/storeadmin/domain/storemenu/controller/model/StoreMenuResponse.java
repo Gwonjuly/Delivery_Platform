@@ -19,6 +19,8 @@ public class StoreMenuResponse {
 
     private Long id;
 
+    private Long storeId;
+
     private String name;
 
     private BigDecimal amount;

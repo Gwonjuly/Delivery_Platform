@@ -3,6 +3,7 @@ package org.delivery.db.user;
 import org.delivery.db.user.enums.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity,Long> {//<entity, id=primary key>, id라는 어노테이션 붙은 변수의 타입
@@ -19,4 +20,5 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {//<entit
      */
     Optional<UserEntity> findFirstByEmailAndPasswordAndStatusOrderByIdDesc(String email, String password, UserStatus status);
 
+    List<UserEntity> findAllByStatusOrderByIdDesc(UserStatus status);
 }

@@ -34,4 +34,8 @@ public class StoreService {
     public List<StoreEntity> registerStore(){
         return storeRepository.findAllByStatusOrderByIdDesc(StoreStatus.REGISTERED);
     }
+    //이름으로 스토어 검색
+    public Optional<StoreEntity> searchByStoreName(String storeName){
+        return storeRepository.findFirstByNameAndStatusOrderByIdDesc(storeName, StoreStatus.REGISTERED);
+    }
 }

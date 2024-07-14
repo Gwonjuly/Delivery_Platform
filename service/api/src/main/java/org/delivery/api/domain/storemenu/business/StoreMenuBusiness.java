@@ -3,7 +3,6 @@ package org.delivery.api.domain.storemenu.business;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.domain.store.service.StoreService;
 import org.delivery.common.annotation.Business;
-import org.delivery.api.domain.storemenu.controller.model.StoreMenuRegisterRequest;
 import org.delivery.api.domain.storemenu.controller.model.StoreMenuResponse;
 import org.delivery.api.domain.storemenu.converter.StoreMenuConverter;
 import org.delivery.api.domain.storemenu.service.StoreMenuService;
@@ -18,15 +17,6 @@ public class StoreMenuBusiness {
     private final StoreMenuService storeMenuService;
     private final StoreMenuConverter storeMenuConverter;
     private final StoreService storeService;
-
-    public StoreMenuResponse register(StoreMenuRegisterRequest request){
-
-        var storeEntity=storeService.getStoreWithThrow(request.getStoreId());
-        var entity=storeMenuConverter.toEntity(request,storeEntity);
-        var newEntity=storeMenuService.register(entity);
-        var response=storeMenuConverter.toResponse(newEntity);
-        return response;
-    }
 
     //특정 스토어에 있는 메뉴들 get
     public List<StoreMenuResponse> search(Long storeId){

@@ -27,14 +27,4 @@ public class StoreMenuService {
     public List<StoreMenuEntity> getStoreMenuByStoreId(Long storeId){
         return storeMenuRepository.findAllByStoreIdAndStatusOrderBySequenceDesc(storeId,StoreMenuStatus.REGISTERED);
     }
-
-    //메뉴 등록
-    public StoreMenuEntity register(StoreMenuEntity storeMenuEntity){
-        return Optional.ofNullable(storeMenuEntity)
-                .map(it->{
-                    it.setStatus(StoreMenuStatus.REGISTERED);
-                    return storeMenuRepository.save(it);
-                })
-                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
-    }
 }

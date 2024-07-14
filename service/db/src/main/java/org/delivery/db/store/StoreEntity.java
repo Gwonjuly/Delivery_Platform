@@ -1,13 +1,16 @@
 package org.delivery.db.store;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
+import org.delivery.db.review.ReviewEntity;
 import org.delivery.db.store.enums.StoreCategory;
 import org.delivery.db.store.enums.StoreStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -45,5 +48,11 @@ public class StoreEntity extends BaseEntity {
 
     @Column(length = 20)
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "store")
+    @ToString.Exclude
+    @JsonIgnore
+    @OrderBy("star")
+    private List<ReviewEntity> reviewEntityList;
 
 }

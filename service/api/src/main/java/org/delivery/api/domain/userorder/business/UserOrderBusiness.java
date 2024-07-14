@@ -15,13 +15,17 @@ import org.delivery.api.domain.userorder.producer.UserOrderProducer;
 import org.delivery.api.domain.userorder.service.UserOrderService;
 import org.delivery.api.domain.userordermenu.converter.UserOrderMenuConverter;
 import org.delivery.api.domain.userordermenu.service.UserOrderMenuService;
+import org.delivery.db.userorder.enums.UserOrderStatus;
 import org.delivery.db.userordermenu.enums.UserOrderMenuStatus;
+import org.springframework.data.domain.Page;
 
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Business
 @RequiredArgsConstructor
+@Transactional
 public class UserOrderBusiness {
 
     private final UserOrderService userOrderService;
@@ -85,6 +89,34 @@ public class UserOrderBusiness {
         return userOrderConverter.toResponse(newUserOrderEntity);
     }
 
+    @Transactional(readOnly = true)
+    public List<UserOrderDetailResponse> viewAll(User user){
+        var userOrderEntityList = userOrderService.getUserOrderList(user.getId()); //유저 주문 내역
+
+        //주문 1건씩 처리
+        var userOrderDetailResponseList=userOrderEntityList.stream().map(userOrderEntity->{
+            //사용자가 주문한
+            var userOrderMenuList=userOrderEntity.getUserOrderMenuList().stream()
+                    .filter(it -> it.getStatus().equals(UserOrderMenuStatus.REGISTERED))
+                    .collect(Collectors.toList());
+
+            var storeMenuEntityList=userOrderMenuList.stream()
+                    .map(it -> it.getStoreMenu())
+                    .collect(Collectors.toList());
+
+            //사용자가 주문한 스토어
+            var storeEntity=userOrderEntity.getStore();
+
+            return UserOrderDetailResponse.builder()
+                    .storeResponse(storeConverter.toResponse(storeEntity))
+                    .userOrderResponse(userOrderConverter.toResponse(userOrderEntity))
+                    .storeMenuResponseList(storeMenuConverter.toResponse(storeMenuEntityList))
+                    .build();
+        }).collect(Collectors.toList());
+        return userOrderDetailResponseList;
+    }
+
+    @Transactional(readOnly = true)
     public List<UserOrderDetailResponse> current(User user) {
         var userOrderEntityList=userOrderService.current(user.getId());
 
@@ -117,11 +149,12 @@ public class UserOrderBusiness {
        return userOrderDetailResponseList;
     }
 
+    @Transactional(readOnly = true)
     public List<UserOrderDetailResponse> history(User user) {
-        var usrOrderEntityList=userOrderService.history(user.getId());
+        var userOrderEntityList=userOrderService.history(user.getId());
 
         //주문 1건씩 처리
-        var userOrderDetailResponseList=usrOrderEntityList.stream().map(userOrderEntity->{
+        var userOrderDetailResponseList=userOrderEntityList.stream().map(userOrderEntity->{
             //사용자가 주문한 메뉴
             var userOrderMenuList=userOrderEntity.getUserOrderMenuList().stream()
                     .filter(it -> it.getStatus().equals(UserOrderMenuStatus.REGISTERED))
@@ -143,12 +176,13 @@ public class UserOrderBusiness {
         return userOrderDetailResponseList;
     }
 
+    @Transactional(readOnly = true)
     public UserOrderDetailResponse read(User user, Long orderId) {
         var userOrderEntity=userOrderService.getUserOrderWithTOutStatusWithThrow(orderId,user.getId());
 
         //사용자가 주문한 메뉴
-        var userOrderMenuList=userOrderEntity.getUserOrderMenuList().stream().
-                filter(it -> it.getStoreMenu().equals(UserOrderMenuStatus.REGISTERED))
+        var userOrderMenuList=userOrderEntity.getUserOrderMenuList().stream()
+                .filter(it -> it.getStatus().equals(UserOrderMenuStatus.REGISTERED))
                 .collect(Collectors.toList());
 
         var storeMenuEntityList=userOrderMenuList.stream()
