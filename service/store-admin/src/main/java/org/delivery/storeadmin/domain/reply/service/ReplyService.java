@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.db.review.ReviewEntity;
 import org.delivery.db.review.ReviewRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,12 @@ public class ReplyService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    @Transactional(readOnly = true)
+    public Page<ReviewEntity> getStoreReview(Long storeId, Pageable pageable){
+        return reviewRepository.findByStoreId(storeId,pageable);
+
+    }
+
     public ReviewEntity saveReply(ReviewEntity reviewEntity, Long storeId) {
         // 본인 가게가 맞는지 확인
         // replyText가 있는지 확인
@@ -34,4 +42,7 @@ public class ReplyService {
         return reviewRepository.save(reviewEntity);
     }
 
+    public void deleteReview(Long reviewId) {
+        reviewRepository.deleteById(reviewId);
+    }
 }
