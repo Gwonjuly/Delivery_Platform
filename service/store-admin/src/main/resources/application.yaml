@@ -1,3 +1,4 @@
+management.endpoints.web.exposure.include: "*"
 server:
   port: 8081
 
@@ -17,9 +18,17 @@ spring:
       dialect: .org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: validate
+  thymeleaf:
+    check-template-location: true
+    prefix: classpath:/templates/
   datasource:
     url: jdbc:mysql://localhost:3306/delivery?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root1234!!
+  devtools:
+    livereload:
+      port: 35730
 
+springdoc:
+  model-and-view-allowed: true
