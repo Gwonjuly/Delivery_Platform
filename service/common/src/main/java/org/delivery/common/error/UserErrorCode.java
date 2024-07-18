@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 public enum UserErrorCode implements ErrorCodeIfs{
 
     USER_NOT_FOUND(400,1404,"사용자를 찾을 수 없음"),
+    USER_NAME_DUPLICATED(400,1405,"사용자 이름 중복"),
+    USER_PW_INCONSISTENCY(400,1406,"잘못된 비밀번호 입력"),
     ;
     //final: 변형이 있으면 안됨
     //errorCode는 HttpstatusCode와 일치할 수 있지만 없는 코드일 수  있음
