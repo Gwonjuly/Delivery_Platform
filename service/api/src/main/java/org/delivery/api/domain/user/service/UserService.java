@@ -1,7 +1,6 @@
 package org.delivery.api.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.delivery.api.domain.user.model.User;
 import org.delivery.common.error.ErrorCode;
 import org.delivery.common.error.UserErrorCode;
 import org.delivery.common.exception.ApiException;

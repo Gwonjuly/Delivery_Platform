@@ -1,6 +1,9 @@
 package org.delivery.api.resolver;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.delivery.api.domain.user.UserCache;
+import org.delivery.api.domain.user.business.UserBusiness;
 import org.delivery.common.annotation.UserSession;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.api.domain.user.service.UserService;
@@ -13,15 +16,17 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-@Component//WebConfig에 등록 시, 필요
+@Component
 @RequiredArgsConstructor
+@Slf4j
 /**
  * HandlerMethodArgumentResolver
  * request가 들어오면 실행 (AOP 방식)
  */
 public class UserSessionResolver implements HandlerMethodArgumentResolver {
 
-    private final UserService userService;//비즈니스도 상관없음
+    private final UserBusiness userBusiness;
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         //지원하는 파라미터 체크, 어노테이션 체크
@@ -35,23 +40,12 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         //supportsParameter 통과(true) 후, 실행
 
-        //RequestConextHolder에서 찾아오기
+        //RequestContextHolder에서 찾아오기 -> 유저정보 대입
         var requestContext= RequestContextHolder.getRequestAttributes();
         var userId=requestContext.getAttribute("userId", RequestAttributes.SCOPE_REQUEST);
-        var userEntity=userService.getUserWithThrow(Long.parseLong(userId.toString()));
+        var user = userBusiness.getUserInfo(Long.parseLong(userId.toString()));
 
-        // 사용자 정보 세팅
-        return User.builder()
-                .id(userEntity.getId())
-                .name(userEntity.getName())
-                .email(userEntity.getEmail())
-                .status(userEntity.getStatus())
-                .password(userEntity.getPassword())
-                .address(userEntity.getAddress())
-                .registeredAt(userEntity.getRegisteredAt())
-                .unregisteredAt(userEntity.getUnregisteredAt())
-                .lastLoginAt(userEntity.getLastLoginAt())
-                .build();
+        return user;
     }
     /**리졸버 역할
      * 1. 어노테이션 및 클래스 체크

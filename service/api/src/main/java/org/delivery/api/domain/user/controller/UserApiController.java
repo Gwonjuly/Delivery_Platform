@@ -7,6 +7,7 @@ import org.delivery.common.api.Api;
 import org.delivery.api.domain.user.business.UserBusiness;
 import org.delivery.api.domain.user.controller.model.UserResponse;
 import org.delivery.api.domain.user.model.User;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
-//차단된 API(OPEN과 달리 로그인을 해야만 사용할 수 있는 API)
+@EnableTransactionManagement
+
 public class UserApiController {
 
     private final UserBusiness userBusiness;
@@ -23,12 +25,6 @@ public class UserApiController {
     @GetMapping("/me")
     public Api<UserResponse> me(@Parameter(hidden = true) @UserSession User user){
 
-        //AuthorizationInterceptor에서 토큰 인증 후, 저장한 userId 호출
-        /*var requestContext= Objects.requireNonNull(RequestContextHolder.getRequestAttributes());
-        var userId=requestContext.getAttribute("userId", RequestAttributes.SCOPE_REQUEST);
-
-        var response=userBusiness.me(Long.parseLong(userId.toString()));
-        -> UserSessionResolver*/
         var response=userBusiness.me(user.getId());
         return Api.OK(response);
         /**
