@@ -1,0 +1,11 @@
+server:
+  port: 8083
+
+spring:
+  applicatioon:
+    name: takeout
+
+kakao:
+  rest:
+    api:
+      key: ${KAKAO_REST_API_KEY}
