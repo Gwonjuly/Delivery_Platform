@@ -32,13 +32,22 @@ dependencies {
     implementation project(':common')
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'//swagger
 
+    //spock
     // https://mvnrepository.com/artifact/org.spockframework/spock-core
     testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
     // https://mvnrepository.com/artifact/org.spockframework/spock-spring
     testImplementation 'org.spockframework:spock-spring:2.3-groovy-3.0'
 
+    //spock mock
     // https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy-dep
     implementation 'net.bytebuddy:byte-buddy-dep:1.12.23'
+
+    //테스트 컨테이너
+    // https://mvnrepository.com/artifact/org.testcontainers/spock
+    testImplementation 'org.testcontainers:spock:1.20.1'
+    // https://mvnrepository.com/artifact/org.testcontainers/mysql
+    testImplementation 'org.testcontainers:mysql:1.20.1'
+
 }
 
 test {
