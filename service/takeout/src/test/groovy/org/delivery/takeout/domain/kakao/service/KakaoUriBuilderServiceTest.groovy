@@ -18,7 +18,7 @@ class KakaoUriBuilderServiceTest extends Specification {
         def charset = StandardCharsets.UTF_8
 
         when:
-        def encodeUri = kakaoUriBuilderService.buildUriBySearchAddress(address)
+        def encodeUri = kakaoUriBuilderService.buildUriByAddress(address)
         def decodeResult = URLDecoder.decode(encodeUri.toString(),charset)
 
         then:
