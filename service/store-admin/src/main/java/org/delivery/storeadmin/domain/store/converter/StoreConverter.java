@@ -17,12 +17,12 @@ public class StoreConverter {
                 .map(it->{
                     return StoreEntity.builder()
                             .name(request.getName())
-                            .address(request.getAddress())
+                            //.address(request.getAddress())
                             .category(request.getStoreCategory())
                             .minimumAmount(request.getMinimumAmount())
                             .minimumDeliveryAmount(request.getMinimumDeliveryAmount())
-                            .thumbnailUrl(request.getThumbnailUrl())
-                            .phoneNumber(request.getPhoneNumber())
+                            //.thumbnailUrl(request.getThumbnailUrl())
+                            //.phoneNumber(request.getPhoneNumber())
                             .build();
                 })
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
@@ -42,6 +42,8 @@ public class StoreConverter {
                             .thumbnailUrl(entity.getThumbnailUrl())
                             .phoneNumber(entity.getPhoneNumber())
                             .star(entity.getStar())
+                            .longitude(entity.getLatitude())
+                            .latitude(entity.getLatitude())
                             .build();
                 }).orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }

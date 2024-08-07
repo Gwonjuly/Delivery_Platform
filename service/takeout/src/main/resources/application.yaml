@@ -1,0 +1,29 @@
+server:
+  port: 8083
+
+spring:
+  applicatioon:
+    name: takeout
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/delivery?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${SPRING_DATA_SOURCE_USER}
+    password: ${SPRING_DATA_SOURCE_PASSWORD}
+  redis:
+    host: localhost
+    post: 6379
+  jpa:
+    show-sql: true
+    properties:
+      format-sql: true
+      dialect: .org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: validate
+
+kakao:
+  rest:
+    api:
+      key: ${KAKAO_REST_API_KEY}

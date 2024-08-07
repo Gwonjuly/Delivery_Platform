@@ -24,4 +24,6 @@ public class StoreResponse {
     private BigDecimal minimumAmount;
     private BigDecimal minimumDeliveryAmount;
     private String phoneNumber;
+    private double latitude;
+    private double longitude;
 }

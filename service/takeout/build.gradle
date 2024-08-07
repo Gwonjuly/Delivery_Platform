@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'groovy'
+}
+
+group 'org.delivery'
+version '1.0-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation project(':db')
+    implementation project(':common')
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'//swagger
+
+    //spock
+    // https://mvnrepository.com/artifact/org.spockframework/spock-core
+    testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
+    // https://mvnrepository.com/artifact/org.spockframework/spock-spring
+    testImplementation 'org.spockframework:spock-spring:2.3-groovy-3.0'
+
+    //spock mock
+    // https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy-dep
+    implementation 'net.bytebuddy:byte-buddy-dep:1.12.23'
+
+    //테스트 컨테이너
+    // https://mvnrepository.com/artifact/org.testcontainers/spock
+    testImplementation 'org.testcontainers:spock:1.20.1'
+    // https://mvnrepository.com/artifact/org.testcontainers/mysql
+    testImplementation 'org.testcontainers:mysql:1.20.1'
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar{
+    enabled =true
+    archiveFileName='app.jar'
+}
+
+jar{
+    enabled=false
+}

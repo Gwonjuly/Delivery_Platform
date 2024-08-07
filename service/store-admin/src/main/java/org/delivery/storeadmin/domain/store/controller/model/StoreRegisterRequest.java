@@ -21,20 +21,20 @@ public class StoreRegisterRequest {
     @NotBlank
     private String name;
 
-    @NotBlank
-    private String address;
+   /* @NotBlank
+    private String address;*/
 
     @NotNull
     private StoreCategory storeCategory;
 
-    @NotBlank
-    private String thumbnailUrl;
+    /*@NotBlank
+    private String thumbnailUrl;*/
 
     @NotNull
     private BigDecimal minimumAmount;
     @NotNull
     private BigDecimal minimumDeliveryAmount;
 
-    @NotBlank
-    private String phoneNumber;
+//    @NotBlank
+//    private String phoneNumber;
 }

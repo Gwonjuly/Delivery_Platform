@@ -21,4 +21,6 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {//<entit
     Optional<UserEntity> findFirstByEmailAndPasswordAndStatusOrderByIdDesc(String email, String password, UserStatus status);
 
     List<UserEntity> findAllByStatusOrderByIdDesc(UserStatus status);
+
+    Optional<UserEntity> findFirstByEmail(String email);
 }

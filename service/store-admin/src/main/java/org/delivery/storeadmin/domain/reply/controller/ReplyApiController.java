@@ -8,8 +8,14 @@ import org.delivery.storeadmin.domain.reply.controller.model.ReplyRegisterReques
 import org.delivery.storeadmin.domain.reply.controller.model.ReviewWithReplyResponse;
 import org.delivery.storeadmin.domain.store.business.StoreBusiness;
 import org.delivery.storeadmin.domain.userorder.controller.model.UserOrderRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,7 +37,28 @@ public class ReplyApiController {
     }
 
     //가게의 리뷰 보기, user-api의 viewStoreReview 동일할 듯
-   // @GetMapping("/view")
+    @GetMapping("/view")
+    public Page<ReviewWithReplyResponse> viewStoreReview(
+            @Parameter(hidden = true)
+            @AuthenticationPrincipal UserSession userSession,
+            @Parameter(hidden = true)
+            @PageableDefault(size = 10, sort = "ReviewCreatedAt", direction = Sort.Direction.DESC) Pageable pageable){
+        ModelAndView model = new ModelAndView();
+        var response = replyBusiness.viewStoreReview(userSession.getStoreId(),pageable);
+        model.addObject("reviews",response);
+        model.setViewName("reply/view");//임시
+        return response;
+    }
 
+
+    // review 삭제(가맹점 직원이 유저 리뷰 삭제)
+    @PostMapping ("reviewId/delete")
+    public void deleteReply(
+            @Parameter(hidden = true)
+            @AuthenticationPrincipal UserSession userSession,
+            @PathVariable Long reviewId
+    ){
+        replyBusiness.deleteReview(userSession, reviewId);
+    }
 
 }

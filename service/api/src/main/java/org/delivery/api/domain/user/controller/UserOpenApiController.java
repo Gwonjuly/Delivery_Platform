@@ -17,8 +17,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/open-api/user")
-//공개된 즉, 열려있는 API
-//WebConfig에서 인터셉터 exclude 처리 되어 있음(로그인 인증 체크 안함)
+
 public class UserOpenApiController {
 
     private final UserBusiness userBusiness;
