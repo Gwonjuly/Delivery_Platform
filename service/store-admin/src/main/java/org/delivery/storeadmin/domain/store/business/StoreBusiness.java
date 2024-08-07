@@ -8,6 +8,7 @@ import org.delivery.storeadmin.domain.store.converter.StoreConverter;
 import org.delivery.storeadmin.domain.store.service.StoreService;
 import org.delivery.common.annotation.Business;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Business
@@ -18,9 +19,10 @@ public class StoreBusiness {
     private final StoreConverter storeConverter;
 
     //가게 직원 등록 요청
+    @Transactional
     public StoreResponse register(StoreRegisterRequest storeRegisterRequest){
-        var entity=storeConverter.toEntity(storeRegisterRequest);
-        var newEntity=storeService.register(entity);
+        var entity = storeService.getStoreByName(storeRegisterRequest.getName());
+        var newEntity=storeService.register(entity,storeRegisterRequest);
         var response=storeConverter.toResponse(newEntity);
         return response;
     }
