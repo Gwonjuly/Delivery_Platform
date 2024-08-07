@@ -1,4 +1,4 @@
-management.endpoints.web.exposure.include: "*"
+#management.endpoints.web.exposure.include: "*"
 server:
   port: 8081
 
@@ -16,19 +16,27 @@ spring:
     properties:
       format-sql: true
       dialect: .org.hibernate.dialect.MySQL8Dialect
+      hibernate.format_sql: true
+    defer-datasource-initialization: true
+    open-in-view: false
     hibernate:
       ddl-auto: validate
   thymeleaf:
     check-template-location: true
     prefix: classpath:/templates/
+    enabled: true
+    #suffix: .html
   datasource:
     url: jdbc:mysql://localhost:3306/delivery?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: root1234!!
+    username: ${SPRING_DATA_SOURCE_USER}
+    password: ${SPRING_DATA_SOURCE_PASSWORD}
+  sql.init.mode: always
   devtools:
     livereload:
       port: 35730
+  thymeleaf3:
+    decoupled-logic: true
 
 springdoc:
   model-and-view-allowed: true

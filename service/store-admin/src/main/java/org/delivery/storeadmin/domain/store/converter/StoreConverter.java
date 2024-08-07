@@ -42,6 +42,8 @@ public class StoreConverter {
                             .thumbnailUrl(entity.getThumbnailUrl())
                             .phoneNumber(entity.getPhoneNumber())
                             .star(entity.getStar())
+                            .longitude(entity.getLatitude())
+                            .latitude(entity.getLatitude())
                             .build();
                 }).orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }
