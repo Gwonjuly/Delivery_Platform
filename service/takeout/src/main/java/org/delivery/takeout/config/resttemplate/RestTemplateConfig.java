@@ -1,4 +1,4 @@
-package org.delivery.takeout.config;
+package org.delivery.takeout.config.resttemplate;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
