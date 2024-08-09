@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
@@ -24,12 +27,18 @@ public class KakaoAddressSearchService {
 
     private final KakaoUriBuilderService kakaoUriBuilderService;
 
-    @Value("${kakao.rest.api.key}")
+    @Value("${KAKAO_REST_API_KEY}")
     private String kakaoRestApikey;
 
+    @Retryable(
+            value = {Exception.class},
+            maxAttempts = 2,
+            backoff = @Backoff(delay = 2000)
+    )
     public KakaoApiResponse searchAddress(String address){
 
         if(ObjectUtils.isEmpty(address))
+            //return null;
             throw new ApiException(ErrorCode.NULL_POINT);
 
         //kakao api의 파라미터 생성
@@ -41,5 +50,12 @@ public class KakaoAddressSearchService {
 
         //kakao api 호출
         return restTemplate.exchange(uri, HttpMethod.GET, httpEntity, KakaoApiResponse.class).getBody();
+    }
+
+    //searchAddress 실패 시, recover 메서드 실행
+    @Recover
+    public KakaoApiResponse recover(Exception e, String address){
+        log.error("모든 재 시도 실패, address:{}, error:{}" ,address, e.getMessage());
+        return null;
     }
 }
