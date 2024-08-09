@@ -40,7 +40,7 @@ dependencies {
 
     //spock mock
     // https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy-dep
-    implementation 'net.bytebuddy:byte-buddy-dep:1.12.23'
+    testImplementation 'net.bytebuddy:byte-buddy-dep:1.12.23'
 
     //테스트 컨테이너
     // https://mvnrepository.com/artifact/org.testcontainers/spock
@@ -48,6 +48,14 @@ dependencies {
     // https://mvnrepository.com/artifact/org.testcontainers/mysql
     testImplementation 'org.testcontainers:mysql:1.20.1'
 
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    testImplementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
+
+    implementation 'org.springframework.retry:spring-retry'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 test {
