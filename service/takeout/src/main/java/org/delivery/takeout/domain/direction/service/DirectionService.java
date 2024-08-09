@@ -2,12 +2,17 @@ package org.delivery.takeout.domain.direction.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.delivery.common.api.Api;
 import org.delivery.common.error.ErrorCode;
 import org.delivery.common.exception.ApiException;
+import org.delivery.db.DirectionRepository;
 import org.delivery.db.direction.DirectionEntity;
 import org.delivery.takeout.domain.kakao.model.DocumentDto;
+import org.delivery.takeout.domain.kakao.service.KakaoCategorySearchService;
 import org.delivery.takeout.domain.store.service.StoreSearchService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Comparator;
 import java.util.List;
@@ -23,6 +28,15 @@ public class DirectionService {
     private static final double RADIUS_KM = 10.0; //반경 10 km
 
     private final StoreSearchService storeSearchService;
+    private final DirectionRepository directionRepository;
+    private final KakaoCategorySearchService kakaoCategorySearchService;
+
+    @Transactional
+    public List<DirectionEntity> saveAll(List<DirectionEntity> directionEntityList){
+        if(CollectionUtils.isEmpty(directionEntityList))
+            throw new ApiException(ErrorCode.NULL_POINT,"direction entity null");
+        return directionRepository.saveAll(directionEntityList);
+    }
 
     public List<DirectionEntity> buildDirectionList(DocumentDto documentDto){
 
@@ -47,6 +61,29 @@ public class DirectionService {
                 .limit(MAX_SEARCH_COUNT)
                 .collect(Collectors.toList());
     }
+
+    public List<DirectionEntity> buildDirectionListByCategory(DocumentDto documentDto){
+        if(Objects.isNull(documentDto))
+            throw new ApiException(ErrorCode.NULL_POINT, "null by category");
+
+        return kakaoCategorySearchService
+                .searchCategory(documentDto.getLatitude(), documentDto.getLongitude(), RADIUS_KM)
+                .getDocumentDtoList()
+                .stream().map(it->
+                        DirectionEntity.builder()
+                                .inputAddress(documentDto.getAddressName())
+                                .inputLatitude(documentDto.getLatitude())
+                                .inputLongitude(documentDto.getLongitude())
+                                .targetStoreName(it.getStoreName())
+                                .targetAddress(it.getAddressName())
+                                .targetLatitude(it.getLatitude())
+                                .targetLongitude(it.getLongitude())
+                                .distance(it.getDistance() * 0.001)
+                                .build())
+                .limit(MAX_SEARCH_COUNT)
+                .collect(Collectors.toList());
+    }
+
 
     // Haversine formula
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
