@@ -9,7 +9,6 @@ import org.delivery.takeout.domain.direction.service.DirectionService;
 import org.delivery.takeout.domain.kakao.model.DocumentDto;
 import org.delivery.takeout.domain.kakao.model.KakaoApiResponse;
 import org.delivery.takeout.domain.kakao.service.KakaoAddressSearchService;
-import org.delivery.takeout.domain.store.converter.StoreConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -26,7 +25,6 @@ public class StoreTakeoutService {
 
     private final KakaoAddressSearchService kakaoAddressSearchService;
     private final DirectionService directionService;
-    private final StoreConverter storeConverter;
     private final Base62Service base62Service;
 
     private static final String ROAD_VIEW_DEFAULT_URL = "https://map.kakao.com/link/roadview/";

@@ -12,6 +12,7 @@ import org.delivery.takeout.domain.store.service.StoreSearchService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Comparator;
 import java.util.List;
@@ -25,6 +26,7 @@ public class DirectionService {
 
     private static final int MAX_SEARCH_COUNT = 20; //스토어 최대 검색 수
     private static final double RADIUS_KM = 10.0; //반경 10 km
+    private static final String DIRECTION_MAP_DEFAULT_URL = "https://map.kakao.com/link/MAP/";
 
     private final StoreSearchService storeSearchService;
     private final DirectionRepository directionRepository;
@@ -38,9 +40,19 @@ public class DirectionService {
         return directionRepository.saveAll(directionEntityList);
     }
 
-    public DirectionEntity findById(String encodedId){
+    public String searchDirectionById(String encodedId){
+
         Long decodedId = base62Service.decodeDirectionId(encodedId);
-        return directionRepository.findById(decodedId).orElseThrow(()->new ApiException(ErrorCode.NULL_POINT,"null"));
+        DirectionEntity directionEntity= directionRepository.findById(decodedId).orElseThrow(()->new ApiException(ErrorCode.NULL_POINT,"null"));
+
+        String params = String.join(",", directionEntity.getTargetStoreName(),
+                String.valueOf(directionEntity.getTargetLatitude()),
+                String.valueOf(directionEntity.getTargetLongitude()));
+
+        String result = UriComponentsBuilder.fromHttpUrl(DIRECTION_MAP_DEFAULT_URL + params)
+                .toUriString();
+
+        return result;
     }
 
     public List<DirectionEntity> buildDirectionList(DocumentDto documentDto){
