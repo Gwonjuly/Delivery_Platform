@@ -36,8 +36,10 @@ public class StoreTakeoutService {
         }
 
         DocumentDto documentDto = kakaoApiResponse.getDocumentDtoList().get(0);
+        log.info("DocumentDto: {}",documentDto);
 
         List<DirectionEntity> directionEntityList = directionService.buildDirectionListByCategory(documentDto);
+        log.info("directionList: {}",directionEntityList);
 
         return  directionService.saveAll(directionEntityList).stream()
                 .map(storeConverter::toDirectionResponse)
