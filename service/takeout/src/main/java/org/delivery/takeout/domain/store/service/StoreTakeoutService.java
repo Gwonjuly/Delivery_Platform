@@ -27,10 +27,11 @@ public class StoreTakeoutService {
     private final DirectionService directionService;
     private final Base62Service base62Service;
 
-    private static final String ROAD_VIEW_DEFAULT_URL = "https://map.kakao.com/link/roadview/";
+    @Value("${takeout.direction.base.url}")
+    private String directionBaseUrl;
 
-    @Value("${takeout.recommendation.base.url}")
-    private String baseUrl;
+    @Value("${takeout.road.base.url}")
+    private String roadViewBaseUrl;
 
     public List<DirectionResponse> storeTakeoutList(String address){
 
@@ -58,8 +59,8 @@ public class StoreTakeoutService {
                 .addressName(directionEntity.getTargetAddress())
                 .storeName(directionEntity.getTargetStoreName())
                 .distance(String.format("%.2f km",directionEntity.getDistance()))
-                .directionUrl(baseUrl + base62Service.encodeDirectionId(directionEntity.getId()))
-                .roadViewUrl(ROAD_VIEW_DEFAULT_URL + directionEntity.getTargetLatitude() + "," + directionEntity.getTargetLongitude())
+                .directionUrl(directionBaseUrl + base62Service.encodeDirectionId(directionEntity.getId()))
+                .roadViewUrl(roadViewBaseUrl + base62Service.encodeDirectionId(directionEntity.getId()))
                 .build();
     }
 }

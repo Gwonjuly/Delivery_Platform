@@ -33,11 +33,20 @@ public class DirectionApiController {
         return mvc;
     }
 
-    @GetMapping("/dir/{encodedId}")
+    @GetMapping("/map/dir/{encodedId}")
     public ModelAndView searchDirection(@PathVariable("encodedId") String encodedId){
 
         var result = directionService.searchDirectionById(encodedId);
         log.info("searchDirection: {}",result);
+        ModelAndView mvc = new ModelAndView();
+        mvc.setViewName("redirect:" + result);
+        return mvc;
+    }
+
+    @GetMapping("/road-view/dir/{encodedId}")
+    public ModelAndView searchRoadView(@PathVariable("encodedId")String encodedId){
+
+        var result = directionService.searchRoadViewById(encodedId);
         ModelAndView mvc = new ModelAndView();
         mvc.setViewName("redirect:" + result);
         return mvc;

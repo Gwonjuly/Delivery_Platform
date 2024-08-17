@@ -30,9 +30,12 @@ springdoc:
   model-and-view-allowed: true
 
 takeout:
-  recommendation:
+  direction:
     base:
-      url: http://localhost:8083/api/take-out/dir/
+      url: http://localhost:8083/api/take-out/map/dir/
+  road:
+    base:
+      url: http://localhost:8083/api/take-out/road-view/dir/
 
 kakao:
   rest:

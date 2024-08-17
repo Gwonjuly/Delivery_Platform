@@ -26,7 +26,8 @@ public class DirectionService {
 
     private static final int MAX_SEARCH_COUNT = 20; //스토어 최대 검색 수
     private static final double RADIUS_KM = 10.0; //반경 10 km
-    private static final String DIRECTION_MAP_DEFAULT_URL = "https://map.kakao.com/link/MAP/";
+    private static final String DIRECTION_MAP_DEFAULT_URL = "https://map.kakao.com/link/map/";
+    private static final String ROAD_VIEW_DEFAULT_URL = "https://map.kakao.com/link/roadview/";
 
     private final StoreSearchService storeSearchService;
     private final DirectionRepository directionRepository;
@@ -50,6 +51,21 @@ public class DirectionService {
                 String.valueOf(directionEntity.getTargetLongitude()));
 
         String result = UriComponentsBuilder.fromHttpUrl(DIRECTION_MAP_DEFAULT_URL + params)
+                .toUriString();
+
+        return result;
+    }
+
+    public String searchRoadViewById(String encodedId){
+
+        Long decodedId = base62Service.decodeDirectionId(encodedId);
+        DirectionEntity directionEntity= directionRepository.findById(decodedId).orElseThrow(()->new ApiException(ErrorCode.NULL_POINT,"null"));
+
+        String params = String.join(",",
+                String.valueOf(directionEntity.getTargetLatitude()),
+                String.valueOf(directionEntity.getTargetLongitude()));
+
+        String result = UriComponentsBuilder.fromHttpUrl(ROAD_VIEW_DEFAULT_URL + params)
                 .toUriString();
 
         return result;
