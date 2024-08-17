@@ -2,7 +2,6 @@ package org.delivery.takeout.domain.direction.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.delivery.common.api.Api;
 import org.delivery.common.error.ErrorCode;
 import org.delivery.common.exception.ApiException;
 import org.delivery.db.DirectionRepository;
@@ -30,12 +29,18 @@ public class DirectionService {
     private final StoreSearchService storeSearchService;
     private final DirectionRepository directionRepository;
     private final KakaoCategorySearchService kakaoCategorySearchService;
+    private final Base62Service base62Service;
 
     @Transactional
     public List<DirectionEntity> saveAll(List<DirectionEntity> directionEntityList){
         if(CollectionUtils.isEmpty(directionEntityList))
             throw new ApiException(ErrorCode.NULL_POINT,"direction entity null");
         return directionRepository.saveAll(directionEntityList);
+    }
+
+    public DirectionEntity findById(String encodedId){
+        Long decodedId = base62Service.decodeDirectionId(encodedId);
+        return directionRepository.findById(decodedId).orElseThrow(()->new ApiException(ErrorCode.NULL_POINT,"null"));
     }
 
     public List<DirectionEntity> buildDirectionList(DocumentDto documentDto){
