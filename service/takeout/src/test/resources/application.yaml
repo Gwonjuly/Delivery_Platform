@@ -11,3 +11,11 @@ kakao:
   rest:
     api:
       key: ${KAKAO_REST_API_KEY}
+
+takeout:
+  direction:
+    base:
+      url: http://localhost:8083/api/take-out/map/dir/
+  road:
+    base:
+      url: http://localhost:8083/api/take-out/road-view/dir/

@@ -67,6 +67,14 @@ test {
     useJUnitPlatform()
 }
 
+processTestResources {
+    boolean hasProperty = project.hasProperty("KAKAO_REST_API_KEY")
+    System.out.println("Set kakao rest api key: $hasProperty")
+    filesMatching('**/application.yaml') {
+        expand(project.properties)
+    }
+}
+
 bootJar{
     enabled =true
     archiveFileName='app.jar'
