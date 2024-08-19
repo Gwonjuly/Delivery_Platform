@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Business
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ReviewBusiness {
 
     private final ReviewService reviewService;
@@ -41,7 +41,6 @@ public class ReviewBusiness {
     private final UserService userService;
     private final ReviewRepository reviewRepository;
 
-    @Transactional(readOnly = true)
     public Page<ReviewDetailResponse> view(User user, Pageable pageable) {
         var userReviewEntityPage = reviewService.getUserReview(user.getId(), pageable);
 
@@ -67,16 +66,10 @@ public class ReviewBusiness {
                     .build();
         }).collect(Collectors.toList());
         return new PageImpl<>(reviewResponsePage);
-        //return (Page<ReviewDetailResponse>) reviewResponsePage;
     }
 
-    @Transactional(readOnly = true)
     public ReviewDetailResponse formReview(User user, Long userOrderId) {
-        //유저 오더 ID로 리뷰 작성 페이지 요청  받기
-        //유저 오더 ID로 해당 리뷰의 등록 여부 확인
-        // 등록 시, 리뷰 엔티티의 모든 내용 반환
-        // 미 등록 시, 가게 이름과 주문 내용 반환
-        //
+
         var reviewEntity = reviewService.getUserOrderReview(userOrderId);
 
         if(reviewEntity.isEmpty()) { // 생성
@@ -113,7 +106,7 @@ public class ReviewBusiness {
         }
     }
 
-    //void, storename, userorderid, star,review text
+    @Transactional
     public ReviewResponse saveReview(User user, ReviewRegisterRequest reviewRegisterRequest){
         var storeEntity = storeService.searchByStoreName(reviewRegisterRequest.getStoreName());
         var userOrderEntity = userOrderService.getUserOrder(reviewRegisterRequest.getUserOrderId());
@@ -121,9 +114,9 @@ public class ReviewBusiness {
         var reviewEntity = reviewConverter.toEntity(reviewRegisterRequest, userEntity,userOrderEntity.get(),storeEntity.get());
         var newReviewEntity = reviewService.saveReview(reviewEntity);
         return reviewConverter.toResponse(newReviewEntity);
-        //save 시, user/userorder/service 엔티티 저장 필요
     }
 
+    @Transactional
     public ReviewResponse updateReview(User user, ReviewUpdateRequest reviewUpdateRequest) {
         var reviewEntity = reviewService.getReview(reviewUpdateRequest.getReviewId());
         var newReviewEntity = Optional.ofNullable(reviewEntity)
@@ -138,11 +131,11 @@ public class ReviewBusiness {
         return reviewConverter.toResponse(newReviewEntity);
     }
 
+    @Transactional
     public void deleteReview(User user, Long reviewId) {
         reviewService.deleteReview(reviewId);
     }
 
-    @Transactional(readOnly = true)
     public Page<ReviewDetailResponse> viewStoreReview(Long storeId,Pageable pageable) {
         var storeReviewEntityPage = reviewService.getStoreReview(storeId,pageable);
         var storeEntity = storeService.getStoreWithThrow(storeId);
