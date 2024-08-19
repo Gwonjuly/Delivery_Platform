@@ -32,6 +32,8 @@ dependencies {
     implementation project(':common')
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'//swagger
 
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     //spock
     // https://mvnrepository.com/artifact/org.spockframework/spock-core
     testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'

@@ -14,7 +14,7 @@ spring:
     password: ${SPRING_DATA_SOURCE_PASSWORD}
   redis:
     host: localhost
-    post: 6379
+    port: 6379
   jpa:
     show-sql: true
     properties:
