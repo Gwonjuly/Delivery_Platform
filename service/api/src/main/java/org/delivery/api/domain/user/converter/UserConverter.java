@@ -11,16 +11,14 @@ import org.delivery.db.user.UserEntity;
 
 import java.util.Optional;
 
-@Converter//Custom Annotation
+@Converter
 @RequiredArgsConstructor
 public class UserConverter {
 
-    //TODO UserRegisterRequest -> UserEntity
     public UserEntity toEntity (UserRegisterRequest request){
 
-        return Optional.ofNullable(request)//request가 있으면
+        return Optional.ofNullable(request)
                 .map(it ->{
-                    //entity로 변환
                     return UserEntity.builder()
                             .name(request.getName())
                             .email(request.getEmail())
@@ -35,7 +33,6 @@ public class UserConverter {
 
         return Optional.ofNullable(userEntity)
                 .map(it ->{
-                    //userResponse로 변환
                     return UserResponse.builder()
                             .id(userEntity.getId())
                             .name(userEntity.getName())

@@ -6,9 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.delivery.db.user.enums.UserStatus;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 @Data
@@ -23,7 +20,7 @@ public class UserResponse {
 
     private String email;
 
-    private UserStatus status;//enum 사용해서 자료형 String -> UserStatus
+    private UserStatus status;
 
     private String address;
     private LocalDateTime registeredAt;

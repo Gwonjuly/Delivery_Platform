@@ -21,7 +21,7 @@ public class User {
 
     private String password;
 
-    private UserStatus status;//enum 사용해서 자료형 String -> UserStatus
+    private UserStatus status;
 
     private String address;
     private LocalDateTime registeredAt;

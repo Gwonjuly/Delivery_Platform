@@ -22,7 +22,6 @@ public class UserOpenApiController {
 
     private final UserBusiness userBusiness;
 
-    //사용자 가입 요청 처리: (요청: user) (리턴: UserResponse)
     @PostMapping("/register")
     public Api<UserResponse> register(
             @Valid
@@ -31,49 +30,13 @@ public class UserOpenApiController {
         var response=userBusiness.register(request.getBody());
         return Api.OK(response);
     }
-    //Api<UserRegisterRequest> 형식
-    /*
-    {
-  "result": {
-    "result_code": 0,
-    "result_message": "string",
-    "result_description": "string"
-  },
-  "body": { =  response
-    "id": 0,
-    "name": "string",
-    "email": "string",
-    "status": "REGISTERED",
-    "address": "string",
-    "registered_at": "2024-04-24T13:31:47.127Z",
-    "unregistered_at": "2024-04-24T13:31:47.127Z",
-    "last_login_at": "2024-04-24T13:31:47.127Z"
-  }
-}
-     */
 
-    //로그인
     @PostMapping("/login")
     public Api<TokenResponse> login(
             @Valid
             @RequestBody Api<UserLoginRequest> request
     ){
-        var response=userBusiness.login(request.getBody());//Api<>가 result+body로 구성
+        var response=userBusiness.login(request.getBody());
         return Api.OK(response);
     }
-    /* 로그인 시, 발행되는 토큰
-    {
-  "result": {
-    "result_code": 200,
-    "result_message": "성공",
-    "result_description": "성공"
-  },
-  "body": {
-    "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImV4cCI6MTcxNDQwNDU0Mn0.9kCKb0kLWvck6m6-oiroyW9adNIpjAvclduDWIWl97U",
-    "access_token_expired_at": "2024-04-30T00:29:02.6216458",
-    "refresh_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VJZCI6MSwiZXhwIjoxNzE0NDQ0MTQyfQ.p1AA_8zfEMqfsCQiKHFqaXbFriKCIcNdX8Nx0jKYmhQ",
-    "refresh_token_expire_at": "2024-04-30T11:29:02.6492637"
-  }
-}
-     */
 }
