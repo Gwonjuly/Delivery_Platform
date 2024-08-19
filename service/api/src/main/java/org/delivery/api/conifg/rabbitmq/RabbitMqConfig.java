@@ -15,12 +15,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
-    /**
-     * Producer: API Server
-     * 메세지를 생성 후. Exchange에 전달
-     * 메세지를 Exchange -> Queue 전달
-     */
-
     //Exchange 생성
     @Bean
     public DirectExchange directExchange(){
@@ -33,22 +27,16 @@ public class RabbitMqConfig {
         return new Queue("delivery.queue");
     }
 
-    //Queue와 exchange 바인딩(연결)
+    //Queue와 exchange 바인딩
     @Bean
     public Binding binding(DirectExchange directExchange, Queue queue){
         return BindingBuilder.bind(queue).to(directExchange).with("delivery.key");
     }
 
-    /**
-     * yaml 설정 후, RabbitTemplate에서 ConnectionFactory가 자동으로 만들어짐
-     * RabbitTemplate:Producer에서 Exchange로 넘기기 위한 템플릿
-     * MessageConverter: Object <-> Json
-     */
-    //Exchange에 데이터 전송을 위한 템플릿: RabbitTemplate
     @Bean
     public RabbitTemplate rabbitTemplate(
-            ConnectionFactory connectionFactory, //yaml에서 설정
-            MessageConverter messageConverter //object <-> Json
+            ConnectionFactory connectionFactory,
+            MessageConverter messageConverter
     ){
         var rabbitTemplate=new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
