@@ -13,47 +13,41 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity // security 활성화
+@EnableWebSecurity
 public class SecurityConfig {
 
-    //swagger 주소는 인증에서 제외
     private List<String> SWAGGER=List.of(
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs/**"
     );
 
-    //이전 방법: 상속 받기, 현재 방법: bin 등록
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
-            .csrf().disable() // default: 활성화, 즉 crsf 공격에 대해서 disable
+            .csrf().disable()
             .authorizeHttpRequests(it->{
                 it
                     .requestMatchers(
-                        PathRequest.toStaticResources().atCommonLocations() //static 리소스에 대해서
-                    ).permitAll() //모든 요청을 허가
+                        PathRequest.toStaticResources().atCommonLocations()
+                    ).permitAll()
 
-                    //swagger 주소는 인증없이 허가
-                    .mvcMatchers( //제외할 주소를 패턴으로 입력
+                    .mvcMatchers(
                         SWAGGER.toArray(new String[0])
                     ).permitAll()
 
                     .mvcMatchers(
-                        "/open-api/**" //open-api 하위에 있는 주소에 대해 모든 요청을 허가
+                        "/open-api/**"
                     ).permitAll()
 
-                    .anyRequest().authenticated();//그 외 모든 주소는 인증을받음
+                    .anyRequest().authenticated();
             })
-            .formLogin(Customizer.withDefaults());//로그인 방식: 디폴트 방식
+            .formLogin(Customizer.withDefaults());
         return httpSecurity.build();
    }
 
-   //Ifs: encods, matches, upgradingEncoding
     @Bean
    public PasswordEncoder passwordEncoder(){
-        //hash 방식으로 암호화
-        //사용자가 넣었던 비밀번호를 인코딩은 할 수 있느나, 디코딩은 불가능
         return new BCryptPasswordEncoder();
     }
 }
