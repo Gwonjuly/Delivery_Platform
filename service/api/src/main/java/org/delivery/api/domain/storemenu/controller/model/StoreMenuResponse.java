@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.delivery.db.storemenu.enums.StoreMenuStatus;
 
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 @Data

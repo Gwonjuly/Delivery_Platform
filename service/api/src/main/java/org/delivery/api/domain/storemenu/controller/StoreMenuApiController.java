@@ -18,8 +18,7 @@ public class StoreMenuApiController {
 
     private final StoreMenuBusiness storeMenuBusiness;
 
-    //특정 가게 클릭 시, 클릭한 storeId로 그 가게의 정보(메뉴) 내리기
-    @GetMapping("/search")//query parameter
+    @GetMapping("/search")
     public Api<List<StoreMenuResponse> > search(
             @RequestParam Long storeId
     ){
