@@ -15,13 +15,8 @@ public class UserOrderProducer {
     private static final String EXCHANGE="delivery.exchange";
     private static final String ROUTE_KEY="delivery.key";
 
-    /**
-     * 1. 사용자 주문(UserOrderEntity)
-     * 2. UserOrderEntity 애서 id 추출
-     * 3. producer()로 id(msg)를 exchange 에 전송
-     */
     public void sendOrder(UserOrderEntity userOrderEntity){
-        sendOrder(userOrderEntity.getId());//user_order의 id
+        sendOrder(userOrderEntity.getId());
     }
 
     public void sendOrder(Long userOrderId){

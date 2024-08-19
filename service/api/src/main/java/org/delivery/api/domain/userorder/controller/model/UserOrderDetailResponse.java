@@ -15,10 +15,10 @@ import java.util.List;
 @Builder
 public class UserOrderDetailResponse {
 
-    private UserOrderResponse userOrderResponse; //유저 정보
+    private UserOrderResponse userOrderResponse;
 
-    private StoreResponse storeResponse; //가게 정보
+    private StoreResponse storeResponse;
 
-    private List<StoreMenuResponse> storeMenuResponseList; //메뉴 정보
+    private List<StoreMenuResponse> storeMenuResponseList;
 
 }

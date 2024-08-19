@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.delivery.db.userorder.enums.UserOrderStatus;
 
-import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -19,7 +18,7 @@ public class UserOrderResponse {
     private Long id;
     private UserOrderStatus status;
 
-    private BigDecimal amount;//주문 총 금액
+    private BigDecimal amount;
 
     private LocalDateTime orderedAt;
 
