@@ -22,7 +22,6 @@ public class UserOrderMenuService {
         return userOrderMenuRepository.findAllByUserOrderIdAndStatus(userOrderId, UserOrderMenuStatus.REGISTERED);
     }
 
-    //사용자가 메뉴 주문 시, user_order_menu의 set Register
     public UserOrderMenuEntity order(UserOrderMenuEntity userOrderMenuEntity){
         return Optional.ofNullable(userOrderMenuEntity)
                 .map(it->{

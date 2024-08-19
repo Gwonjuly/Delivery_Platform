@@ -8,9 +8,6 @@ import org.delivery.db.userordermenu.UserOrderMenuEntity;
 @Converter
 public class UserOrderMenuConverter {
 
-    /** user_order_menu Mapping
-     * UserOrderEntity의 id + StoreMenuEntity-> UserOrderMenuEntity
-     */
     public UserOrderMenuEntity toEntity(UserOrderEntity userOrderEntity, StoreMenuEntity storeMenuEntity){
         return UserOrderMenuEntity.builder()
                 .userOrder(userOrderEntity)
