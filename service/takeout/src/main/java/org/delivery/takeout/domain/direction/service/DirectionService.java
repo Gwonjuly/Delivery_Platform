@@ -89,7 +89,7 @@ public class DirectionService {
                                 calculateDistance(documentDto.getLatitude(), documentDto.getLongitude(), it.getLatitude(), it.getLongitude())
                         )
                         .build())
-                .filter(directionEntity -> directionEntity.getDistance() <= RADIUS_KM)
+                .filter(directionEntity -> directionEntity.getDistance() <= RADIUS_KM)//식당 REGISTERED 필터 추가
                 .sorted(Comparator.comparing(DirectionEntity::getDistance))
                 .limit(MAX_SEARCH_COUNT)
                 .collect(Collectors.toList());

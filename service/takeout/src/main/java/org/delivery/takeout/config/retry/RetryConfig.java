@@ -7,8 +7,4 @@ import org.springframework.retry.annotation.EnableRetry;
 @Configuration
 public class RetryConfig {
 
-    /*@Bean
-    public RetryTemplate retryTemplate(){
-        return new RetryTemplate();
-    }*/
 }
