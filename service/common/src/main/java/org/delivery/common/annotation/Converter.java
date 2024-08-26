@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Service
-//dto <-> entity, A.class <-> B.class 등의 데이터 변환에 대한 처리
+
 public @interface Converter {
 
     @AliasFor(annotation = Service.class)

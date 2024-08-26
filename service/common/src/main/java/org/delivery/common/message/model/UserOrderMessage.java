@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserOrderMessage {
 
-    private Long userOrderId;//user_order의 id
+    private Long userOrderId;
 }

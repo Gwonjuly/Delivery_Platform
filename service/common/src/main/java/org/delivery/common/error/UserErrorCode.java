@@ -14,9 +14,7 @@ public enum UserErrorCode implements ErrorCodeIfs{
     USER_NAME_DUPLICATED(400,1405,"사용자 이름 중복"),
     USER_PW_INCONSISTENCY(400,1406,"잘못된 비밀번호 입력"),
     ;
-    //final: 변형이 있으면 안됨
-    //errorCode는 HttpstatusCode와 일치할 수 있지만 없는 코드일 수  있음
-    private final Integer httpStatusCode; //내부 에러 코드에 상응하는 http status 코드
-    private final Integer errorCode; //내부 에러 코드
+    private final Integer httpStatusCode;
+    private final Integer errorCode;
     private final String description;
 }
