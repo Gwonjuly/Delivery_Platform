@@ -5,13 +5,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import net.bytebuddy.asm.Advice;
 import org.delivery.db.BaseEntity;
 import org.delivery.db.review.enums.ReviewStatus;
 import org.delivery.db.store.StoreEntity;
 import org.delivery.db.user.UserEntity;
 import org.delivery.db.userorder.UserOrderEntity;
-import org.hibernate.event.spi.LoadEventListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,17 +23,17 @@ import java.time.LocalDateTime;
 @Table(name = "review")
 public class ReviewEntity extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (nullable = false, name="user_id")
-    private UserEntity user; // -> userEntity
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "user_order_id")
-    private UserOrderEntity userOrder; // ->userOrderEntity
+    private UserOrderEntity userOrder;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "store_id")
-    private StoreEntity store; // -> storeEntity
+    private StoreEntity store;
 
     @Column(nullable = false)
     private double star; //별점
@@ -58,7 +56,4 @@ public class ReviewEntity extends BaseEntity {
 
     private LocalDateTime replyUpdatedAt; //사장님 댓글 수정 일시
 
-    /*public static ReviewEntity of(UserOrderEntity userOrderEntity, UserEntity userEntity, StoreEntity storeEntity, String reviewText) {
-        return new ReviewEntity(userOrderEntity, userEntity, storeEntity,reviewText);
-    }*/
 }
