@@ -14,14 +14,17 @@ import org.delivery.storeadmin.domain.store.service.StoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityExistsException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Business
 @RequiredArgsConstructor
+@Transactional
 public class ReplyBusiness {
 
     private final ReplyService replyService;
@@ -31,7 +34,6 @@ public class ReplyBusiness {
 
     public ReviewWithReplyResponse saveReply(ReplyRegisterRequest replyRegisterRequest, Long storeId) {
         var reviewEntity = replyService.getReview(replyRegisterRequest.getReviewId());
-       // var newReviewEntity = replyService.saveReply(reviewEntity, storeId);
         var newReviewEntity = Optional.ofNullable(reviewEntity)
                 .map(it ->{
                     it.setReplyText(replyRegisterRequest.getReplyText());
@@ -46,24 +48,11 @@ public class ReplyBusiness {
         replyService.deleteReview(reviewId);
     }
 
-    public Page<ReviewWithReplyResponse> viewStoreReview(Long storeId, Pageable pageable) {
+    public List<ReviewWithReplyResponse> viewStoreReview(Long storeId, Pageable pageable) {
         var storeReviewEntityPage = replyService.getStoreReview(storeId,pageable);
-        var storeEntity = storeService.getStoreWithThrow(storeId);
-       /* var reviewResponsePage = storeReviewEntityPage.stream().map(reviewEntity -> {
-            var userOrderEntity = reviewEntity.getUserOrder();
-            var userOrderMenuList = userOrderEntity.getUserOrderMenuList().stream()
-                    .filter(it->it.getStatus().equals(UserOrderMenuStatus.REGISTERED))
-                    .collect(Collectors.toUnmodifiableList());
-            var storeMenuList = userOrderMenuList.stream()
-                    .map(it->it.getStoreMenu())
-                    .collect(Collectors.toUnmodifiableList());
-            return storeReviewEntityPage.stream()
-                    .map(replyConverter::toResponse)
-                    .collect(Collectors.toUnmodifiableList());
-        })*/
         var storeReplyEntityList= storeReviewEntityPage.stream()
                 .map(replyConverter::toResponse)
                 .collect(Collectors.toUnmodifiableList());
-        return new PageImpl<>(storeReplyEntityList);
+        return storeReplyEntityList;
     }
 }

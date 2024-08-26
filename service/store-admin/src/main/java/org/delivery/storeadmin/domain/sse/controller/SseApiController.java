@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,7 +25,7 @@ public class SseApiController {
     private final SseConnectionPool sseConnectionPool;
     private final ObjectMapper objectMapper;
 
-    @GetMapping(path="/connect",produces = MediaType.TEXT_EVENT_STREAM_VALUE) //, 제공하는 미디어 타입
+    @GetMapping(path="/connect",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseBodyEmitter connect(
             @Parameter(hidden = true)
             @AuthenticationPrincipal UserSession userSession
@@ -48,7 +44,6 @@ public class SseApiController {
             @AuthenticationPrincipal UserSession userSession
     ){
         var userSseConnection = sseConnectionPool.getSession(userSession.getStoreId().toString());
-        //if(userSseConnection!= null){}
         Optional.ofNullable(userSseConnection)
                 .ifPresent(it ->{
                     it.sendMessage("hi");

@@ -2,7 +2,6 @@ package org.delivery.storeadmin.domain.reply.converter;
 
 import org.delivery.common.annotation.Converter;
 import org.delivery.db.review.ReviewEntity;
-import org.delivery.storeadmin.domain.reply.controller.model.ReplyRegisterRequest;
 import org.delivery.storeadmin.domain.reply.controller.model.ReviewWithReplyResponse;
 
 @Converter

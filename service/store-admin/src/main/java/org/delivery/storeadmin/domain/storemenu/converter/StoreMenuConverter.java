@@ -1,6 +1,5 @@
 package org.delivery.storeadmin.domain.storemenu.converter;
 
-import org.apache.catalina.Store;
 import org.delivery.common.error.ErrorCode;
 import org.delivery.common.exception.ApiException;
 import org.delivery.db.store.StoreEntity;

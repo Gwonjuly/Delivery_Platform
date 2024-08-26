@@ -7,16 +7,16 @@ import org.delivery.storeadmin.domain.userorder.business.UserOrderBusiness;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-@Component //service 무관
+@Component
 @RequiredArgsConstructor
 @Slf4j
 public class UserOrderConsumer {
 
     private final UserOrderBusiness userOrderBusiness;
 
-    @RabbitListener(queues = "delivery.queue")//어떤 queue에서 메시지를  받아올 것인지
+    @RabbitListener(queues = "delivery.queue")
     public void userOrderConsumer(
-            UserOrderMessage userOrderMessage //UserOrderProducer에서 build됨
+            UserOrderMessage userOrderMessage
     ){
         log.info("message queue>> {}",userOrderMessage);
         userOrderBusiness.pushUserOrder(userOrderMessage);

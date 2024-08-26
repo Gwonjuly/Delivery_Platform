@@ -9,13 +9,13 @@ import org.delivery.storeadmin.domain.storeuser.converter.StoreUserConverter;
 import org.delivery.storeadmin.domain.storeuser.service.StoreUserService;
 import org.springframework.stereotype.Service;
 
-@Service//편의상 @Business를 만들긴 했지만 걍 service로 해도 상관없음
+@Service
 @RequiredArgsConstructor
 public class StoreUserBusiness {
 
     private final StoreUserConverter storeUserConverter;
     private final StoreUserService storeUserService;
-    private final StoreRepository storeRepository;// TODO StoreService로 변경하가
+    private final StoreRepository storeRepository;
 
     public StoreUserResponse register(StoreUserRegisterRequest request){
         var storeEntity=storeRepository.findFirstByNameAndStatusOrderByIdDesc(request.getStoreName(), StoreStatus.REGISTERED);

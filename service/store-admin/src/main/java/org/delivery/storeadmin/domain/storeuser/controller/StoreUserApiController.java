@@ -17,8 +17,6 @@ public class StoreUserApiController {
 
     private final StoreUserConverter storeUserConverter;
 
-    //로그인 된 사용자의 정보 확인(UserSession)
-
     @GetMapping("/me")
     public StoreUserResponse me(
             @Parameter(hidden = true)

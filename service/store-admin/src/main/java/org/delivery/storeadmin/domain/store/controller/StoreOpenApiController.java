@@ -24,7 +24,7 @@ public class StoreOpenApiController {
             @RequestBody Api<StoreRegisterRequest> request
             )
     {
-        var response=storeBusiness.register(request.getBody());//Api<result+body> 형태로 getBody 없으면 에러남
+        var response=storeBusiness.register(request.getBody());
         return Api.OK(response);
     }
 

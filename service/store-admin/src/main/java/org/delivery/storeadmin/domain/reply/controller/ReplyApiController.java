@@ -6,16 +6,14 @@ import org.delivery.storeadmin.domain.authorization.model.UserSession;
 import org.delivery.storeadmin.domain.reply.business.ReplyBusiness;
 import org.delivery.storeadmin.domain.reply.controller.model.ReplyRegisterRequest;
 import org.delivery.storeadmin.domain.reply.controller.model.ReviewWithReplyResponse;
-import org.delivery.storeadmin.domain.store.business.StoreBusiness;
-import org.delivery.storeadmin.domain.userorder.controller.model.UserOrderRequest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,9 +34,9 @@ public class ReplyApiController {
         return response;
     }
 
-    //가게의 리뷰 보기, user-api의 viewStoreReview 동일할 듯
+    //가게의 리뷰 보기
     @GetMapping("/view")
-    public Page<ReviewWithReplyResponse> viewStoreReview(
+    public List<ReviewWithReplyResponse> viewStoreReview(
             @Parameter(hidden = true)
             @AuthenticationPrincipal UserSession userSession,
             @Parameter(hidden = true)
