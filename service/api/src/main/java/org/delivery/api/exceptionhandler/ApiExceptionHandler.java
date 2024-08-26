@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice//특정 패키지에서 발생한 예외 처리
+@RestControllerAdvice
 
-@Order(value = Integer.MIN_VALUE)//가장 먼저 실행 min, 가장 나중에 실행 max(ApiException: 제일 먼저 실해됨)
+@Order(value = Integer.MIN_VALUE)
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value = ApiException.class)
     public ResponseEntity<Api<Object>> apiException(ApiException apiException){
-        log.error("",apiException);//ApiException이 RuntimeException을 상속받았기에 stack trace 가능
+        log.error("",apiException);
 
         var errorCode=apiException.getErrorCodeIfs();
         return ResponseEntity
