@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 @Component
 public class JwtTokenHelper implements TokenHelperIfs {
-    //서명을 위한 키(암호 키), token에 대한 만료 지정. yaml에 등록
 
     @Value("${token.secret.key}")
     private String secretKey;

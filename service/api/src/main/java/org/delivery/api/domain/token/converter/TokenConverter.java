@@ -14,7 +14,7 @@ import java.util.Objects;
 public class TokenConverter {
 
     public TokenResponse toResponse(TokenDto accessToken, TokenDto refreshToken){
-        //해당 토큰의 null 체크
+
         Objects.requireNonNull(accessToken,()->{throw new ApiException(ErrorCode.NULL_POINT);});
         Objects.requireNonNull(refreshToken,()->{throw new ApiException(ErrorCode.NULL_POINT);});
 
