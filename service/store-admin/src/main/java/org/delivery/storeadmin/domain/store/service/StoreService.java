@@ -46,6 +46,11 @@ public class StoreService {
         return entity.orElseThrow(()->new ApiException(ErrorCode.NULL_POINT,"해당 이름의 가게가 없거나, 이미 등록된 가게 입니다."));
     }
 
+    public StoreEntity getRegisteredStoreByName(String name){
+        var entity = storeRepository.findFirstByNameAndStatusOrderByIdDesc(name,StoreStatus.REGISTERED);
+        return entity.orElseThrow(()->new ApiException(ErrorCode.NULL_POINT,"해당 이름의 가게가 없거나, 등록되지 않은 가게 입니다."));
+    }
+
     public List<StoreEntity> loadStoreList(){
         return CsvUtils.csvToStoreResponse()
                 .stream().map(it->
