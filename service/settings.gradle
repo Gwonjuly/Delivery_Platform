@@ -6,4 +6,5 @@ include 'common'
 include 'apigw'
 include 'account'
 include 'takeout'
+include 'eureka'
 

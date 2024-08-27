@@ -1,10 +1,10 @@
 #management.endpoints.web.exposure.include: "*"
 server:
-  port: 8081
+  port: 8081 #0
 
 spring:
   application:
-    name: store-admin
+    name: store-admin-service
 
   rabbitmq:
     host: localhost
@@ -37,6 +37,16 @@ spring:
       port: 35730
   thymeleaf3:
     decoupled-logic: true
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+
 
 springdoc:
   model-and-view-allowed: true

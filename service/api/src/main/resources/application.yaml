@@ -1,4 +1,9 @@
+server:
+  port: 8080
+
 spring:
+  application:
+    name: user-service
   rabbitmq:
     host: localhost
     port: 5672
@@ -32,6 +37,13 @@ spring:
 
 springdoc:
   model-and-view-allowed: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
 
 token:
   secret:
