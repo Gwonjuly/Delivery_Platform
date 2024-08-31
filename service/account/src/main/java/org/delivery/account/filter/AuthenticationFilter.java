@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.delivery.account.domain.storeuser.model.StoreUserLoginRequest;
 import org.delivery.account.domain.storeuser.model.UserSession;
 import org.delivery.account.domain.storeuser.service.StoreUserAuthorizationService;
-import org.delivery.account.domain.storeuser.service.StoreUserService;
+import org.delivery.account.domain.token.business.TokenBusiness;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,15 +26,17 @@ import java.util.ArrayList;
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final StoreUserService storeUserService;
     private final StoreUserAuthorizationService storeUserAuthorizationService;
     private Environment env;
     private PasswordEncoder passwordEncoder;
-    public AuthenticationFilter(AuthenticationManager authenticationManager, StoreUserAuthorizationService storeUserAuthorizationService, Environment env,StoreUserService storeUserService){
+    private final TokenBusiness tokenBusiness;
+
+    public AuthenticationFilter(AuthenticationManager authenticationManager, StoreUserAuthorizationService storeUserAuthorizationService,
+                                Environment env, TokenBusiness tokenBusiness){
         super(authenticationManager);
         this.storeUserAuthorizationService = storeUserAuthorizationService;
         this.env = env;
-        this.storeUserService = storeUserService;
+        this.tokenBusiness = tokenBusiness;
     }
 
     @Override
@@ -55,5 +57,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
         var userId = ((UserSession)authResult.getPrincipal()).getUserId();
+        var token = tokenBusiness.issueToken(userId);
+        response.addHeader("token", token.getAccessToken());
+        response.addHeader("userId", String.valueOf(userId));
     }
 }

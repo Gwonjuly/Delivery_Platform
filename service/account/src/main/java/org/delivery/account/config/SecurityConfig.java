@@ -2,7 +2,7 @@ package org.delivery.account.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.account.domain.storeuser.service.StoreUserAuthorizationService;
-import org.delivery.account.domain.storeuser.service.StoreUserService;
+import org.delivery.account.domain.token.business.TokenBusiness;
 import org.delivery.account.filter.AuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,10 +26,10 @@ public class SecurityConfig {
 
     @Autowired
     private StoreUserAuthorizationService storeUserAuthorizationService;
-    @Autowired
-    private StoreUserService storeUserService;
     private PasswordEncoder passwordEncoder;
     private Environment env;
+    @Autowired
+    private TokenBusiness tokenBusiness;
 
     private final String storeLoginUri = "/login";
 
@@ -54,7 +54,6 @@ public class SecurityConfig {
 
         httpSecurity
             .csrf().disable();
-        log.info("account url:{}", storeLoginUri);
 
         httpSecurity
                 .antMatcher(storeLoginUri)
@@ -70,6 +69,6 @@ public class SecurityConfig {
    }
 
     private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager) throws Exception{
-        return new AuthenticationFilter(authenticationManager, storeUserAuthorizationService, env, storeUserService);
+        return new AuthenticationFilter(authenticationManager, storeUserAuthorizationService, env, tokenBusiness);
     }
 }

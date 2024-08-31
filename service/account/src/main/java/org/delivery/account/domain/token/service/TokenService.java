@@ -16,6 +16,18 @@ public class TokenService {
 
     private final TokenHelperIfs tokenHelperIfs;
 
+    public TokenDto issueAccessToken(Long userId){
+        var data=new HashMap<String ,Object>();
+        data.put("userId",userId);
+        return tokenHelperIfs.issueAccessToken(data);
+    }
+
+    public TokenDto issueRefreshToken(Long userId){
+        var data=new HashMap<String ,Object>();
+        data.put("useId",userId);
+        return tokenHelperIfs.issueRefreshToken(data);
+    }
+
     public Long validationToken(String token){
         var map=tokenHelperIfs.validationTokenWithThrow(token);
         var userId=map.get("userId");
