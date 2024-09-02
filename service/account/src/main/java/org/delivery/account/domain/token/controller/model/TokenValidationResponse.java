@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TokenValidationResponse {
     private Long userId;
+    private String email;
 }

@@ -8,6 +8,7 @@ import org.delivery.account.domain.token.converter.TokenConverter;
 import org.delivery.account.domain.token.model.TokenResponse;
 import org.delivery.account.domain.token.service.TokenService;
 import org.delivery.common.annotation.Business;
+import org.delivery.db.storeuser.StoreUserRepository;
 
 @Business
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ import org.delivery.common.annotation.Business;
 public class TokenBusiness {
     private final TokenService tokenService;
     private final TokenConverter tokenConverter;
+    private final StoreUserRepository storeUserRepository;
 
     public TokenResponse issueToken(Long userId){
 
@@ -26,8 +28,10 @@ public class TokenBusiness {
     public TokenValidationResponse tokenValidation(TokenValidationRequest request){
         log.info("token dto_business: {}", request.getTokenDto());
         var result = tokenService.validationToken(request.getTokenDto().getToken());
+        var email = storeUserRepository.findById(result).get().getEmail();
         return TokenValidationResponse.builder()
                 .userId(result)
+                .email(email)
                 .build();
     }
 }
