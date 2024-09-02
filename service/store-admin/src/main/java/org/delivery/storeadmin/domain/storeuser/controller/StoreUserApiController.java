@@ -3,7 +3,6 @@ package org.delivery.storeadmin.domain.storeuser.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.delivery.storeadmin.domain.authorization.model.UserSession;
-import org.delivery.storeadmin.domain.storeuser.controller.model.StoreUserResponse;
 import org.delivery.storeadmin.domain.storeuser.converter.StoreUserConverter;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +17,9 @@ public class StoreUserApiController {
     private final StoreUserConverter storeUserConverter;
 
     @GetMapping("/me")
-    public StoreUserResponse me(
+    public String me(
             @Parameter(hidden = true)
             @AuthenticationPrincipal UserSession userSession){
-        return storeUserConverter.toResponse(userSession);
+        return storeUserConverter.toResponse(userSession).toString();
     }
 }
