@@ -19,10 +19,10 @@ class KakaoAddressSearchServiceTest extends AbstractContainerBaseTest {
 
         then:
         /*result = thrown(ApiException.class)
-        println("에러 코드:" + result)
+        println("에러 코드:" + result)*/
         //result.getErrorDescription() == "Null Point"
-        result.getErrorDescription() == ErrorCode.NULL_POINT.description*/
-        result == null
+        result.getErrorDescription() == ErrorCode.NULL_POINT.description
+        //result == null
     }
 
     def "SearchAddress-address가 유효할 경우 정상 응답"(){
@@ -34,6 +34,10 @@ class KakaoAddressSearchServiceTest extends AbstractContainerBaseTest {
 
         then:
         println("검색 결과: "+result.documentDtoList)
+        println("위도: "+result.getDocumentDtoList().get(0).getLatitude())
+        println("경도: "+result.getDocumentDtoList().get(0).getLongitude())
+        println("이름: "+result.getDocumentDtoList().get(0).getAddressName())
+        println("null: "+result.getDocumentDtoList().get(0).getDistance())
         result.documentDtoList.size() > 0
         result.metaDto.totalCount > 0
         result.documentDtoList.get(0) != null
