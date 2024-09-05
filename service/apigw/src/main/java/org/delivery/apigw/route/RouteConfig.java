@@ -22,6 +22,15 @@ public class RouteConfig {
                                 .filter(servicePrivateApiFilter.apply(new ServicePrivateApiFilter.Config())) //필터 지정
                                 .rewritePath("/service-api(?<segment>/?.*)", "${segment}"))
                         .uri("http://localhost:8080")//라우팅 할 주소
-                ).build();
+                )
+                .route(spec -> spec
+                        .order(-1)
+                        .path("/service-takeout/api/**")
+                        .filters(filterSpec ->filterSpec
+                                .filter(servicePrivateApiFilter.apply(new ServicePrivateApiFilter.Config()))
+                                .rewritePath("/service-takeout(?<segment>/?.*)", "${segment}"))
+                        .uri("http://localhost:8083")
+                )
+                .build();
     }
 }

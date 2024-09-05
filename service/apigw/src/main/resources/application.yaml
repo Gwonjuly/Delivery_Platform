@@ -14,26 +14,35 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: public-service-api #이름
-          uri: http://localhost:8080 #api 서버 주소 lb://USER-SERVICE
+        - id: user-service # 유저 open-api
+          uri: lb://USER-SERVICE
           predicates:
-            - Path=/service-api/open-api/**
+            - Path=/user-service/open-api/**
           filters:
-            - RewritePath=/service-api(?<segment>/?.*), $\{segment}
+            - RewritePath=/user-service(?<segment>/?.*), $\{segment}
             - ServicePublicApiFilter
-
-        - id: public-store-admin-service #이름
-          uri: http://localhost:8081 #api 서버 주소 lb://STORE-ADMIN-SERVICE
+        - id: account-service # 스토어 login
+          uri: lb://ACCOUNT-SERVICE
           predicates:
-            #- Path=/store-admin-service/open-api/**
-            - Path=/public-store-admin/**
+            - Path=/account-service/login
+            - Method=POST
           filters:
-            - RewritePath=/public-store-admin(?<segment>/?.*), $\{segment}
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/account-service(?<segment>/?.*), $\{segment}
             - ServicePublicApiFilter
-#        - id: public-takeout
-#          uri: http://localhost:8083
-#          predicates:
-#            - Path=/service-takeout/api/take-out/**
-#          filters:
-#            - RewritePath=/service-takeout(?<segment>/?.*), $\{segment}
-#            - ServicePublicApiFilter
+        - id: store-admin-service # 스토어 open-api
+          uri: lb://STORE-ADMIN-SERVICE
+          predicates:
+            - Path=/store-admin-service/open-api/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/store-admin-service(?<segment>/?.*), $\{segment}
+            - ServicePublicApiFilter
+        - id: store-admin-service # 스토어 api
+          uri: lb://STORE-ADMIN-SERVICE
+          predicates:
+            - Path=/store-admin-service/api/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/store-admin-service(?<segment>/?.*), $\{segment}
+            - ServicePrivateApiFilter # 인증 필터
