@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>리뷰 쓰기</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Julee">
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<main id="review-view" class="container">
+    <header></header>
+
+        <header>
+            <h1>에그몬</h1>
+        </header>
+        <aside>
+            <p>토스트</p>
+            <p>베이컨 치즈몬</p>
+            <p>리뷰 작성자</p>
+        </aside>
+        <div class="row g-5">
+
+            <!--별점 기능 추가-->
+            <!--            리뷰 쓰기/수정 상자-->
+            <div class="row g-5" id="article-buttons">
+                <form id="delete-article-form">
+                    <div class="pb-5 d-grid gap-2 d-md-block">
+                        <a class="btn btn-success me-md-2L" role="button" id="update-article">수정</a>
+                        <button class="btn btn-danger me-md-2" type="submit">삭제</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row g-5">
+                <section>
+                    <form class="row g-3">
+                        <div class="col-8">
+                            <label for="review" hidden="">리뷰</label>
+                            <textarea class="form-control" id="review" placeholder="리뷰 쓰기" rows="3"></textarea>
+                        </div>
+                        <div class="col-auto">
+                            <label hidden>댓글 쓰기</label>
+                            <button class="btn btn-primary" id="btn-write" type="submit">쓰기</button>
+                        </div>
+                    </form>
+                    <!--                사장님 댓글-->
+                    <ul>
+                        <li>
+                            <div>
+                                <time><small>2024-0101 사장님 댓글 날짜</small></time>
+                                <strong>에그몬 사장님</strong>
+                                <p>
+                                    주문해주셔서 감사합니다.
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+</main>
+
+    <footer></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"></script>
+    </body>
+</html>

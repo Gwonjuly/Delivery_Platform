@@ -42,16 +42,32 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         if(handler instanceof ResourceHttpRequestHandler)
             return true;
 
-        var userId=request.getHeader("x-user-id");
+        /*var userId=request.getHeader("x-user-id");
         if(userId==null){
-            throw new ApiException(ErrorCode.BAD_REQUEST,"x-user-id 헤더 없음");
+            throw new ApiException(ErrorCode.BAD_REQUEST,"x-user-id 헤더 없음"); //-> 헤더에 유저 정보가 없으면
         }
 
         //검증 완료 후, userId 저장함 어디에? requestContext: Local Thread로 하나의 리퀘스트에 대해 유효하게 글로벌하게 저장할 수 있는 영역
         var requestContext = Objects.requireNonNull(RequestContextHolder.getRequestAttributes());
         requestContext.setAttribute("userId", userId, RequestAttributes.SCOPE_REQUEST);//requestContext 영역에 리퀘스트 단위로 userId 저장
 
-        return true;
+        return true;*/
+
+        var accessToken=request.getHeader("authorization-token");
+        if(accessToken==null){
+            throw new ApiException(TokenErrorCode.AUTHORIZATION_TOKEN_NOT_FOUND);
+        }
+
+        var userId=tokenBusiness.validationAccessToken(accessToken);//값이 없었으면 전단게에서 throw 터졌음
+
+        //검증 완료 후, userId 저장함 어디에? requestContext: Local Thread로 하나의 리퀘스트에 대해 유효하게 글로벌하게 저장할 수 있는 영역
+        if(userId!=null) {
+            var requestContext = Objects.requireNonNull(RequestContextHolder.getRequestAttributes());
+            requestContext.setAttribute("userId", userId, RequestAttributes.SCOPE_REQUEST);//requestContext 영역에 리퀘스트 단위로 userId 저장
+            log.info("인터셉터 성공: {}",requestContext);
+            return true;
+        }
+        throw new ApiException(ErrorCode.BAD_REQUEST,"인증 실패");
 
         /** 인터셉터 역할
          * 1. authorization-token GET 후 검증

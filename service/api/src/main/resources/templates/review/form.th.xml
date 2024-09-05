@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!--<html lang="kr" xmlns:th="http://www.thymeleaf.org">-->
 <thlogic>
     <attr sel="#header" th:replace="~{header :: header}" />
     <attr sel="#footer" th:replace="~{footer :: footer}" />
