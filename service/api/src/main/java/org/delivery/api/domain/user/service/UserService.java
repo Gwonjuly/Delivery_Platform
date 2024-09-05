@@ -23,7 +23,7 @@ public class UserService {
     @Transactional
     public UserEntity register(UserEntity userEntity){
 
-        return Optional.ofNullable(userEntity)//userEntity가 있으면
+        return Optional.ofNullable(userEntity)
                 .map(it->{
                     if(userRepository.findFirstByEmail(it.getEmail()).isPresent()){
                         throw new ApiException(UserErrorCode.USER_NAME_DUPLICATED);
@@ -43,7 +43,7 @@ public class UserService {
 
     public UserEntity getUserWithThrow(String email, String password){
         return userRepository.findFirstByEmailAndPasswordAndStatusOrderByIdDesc(email,password, UserStatus.REGISTERED)
-                .orElseThrow(()->new ApiException(UserErrorCode.USER_NOT_FOUND));//사용자가  없으면 throw 발생
+                .orElseThrow(()->new ApiException(UserErrorCode.USER_NOT_FOUND));
     }
 
     public UserEntity getUserWithThrow(Long userId){

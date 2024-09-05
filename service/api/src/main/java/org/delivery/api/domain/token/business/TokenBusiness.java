@@ -14,18 +14,12 @@ import java.util.Optional;
 @Business
 @RequiredArgsConstructor
 public class TokenBusiness {
-    //issueToken, TokenValidation
 
     private final TokenService tokenService;
     private final TokenConverter tokenConverter;
 
-    /**
-     * 1. userEntity에서 userId 추출
-     * 2. userId를 이용해서 access/refresh 토큰 발행
-     * 3. converter를 활용하여 토큰 -> tokenResponse
-     */
     public TokenResponse issueToken(UserEntity userEntity){
-        //userEntity의 null 여부 체크
+
         return Optional.ofNullable(userEntity)
                 .map(ue->{
                     return ue.getId();
@@ -38,7 +32,6 @@ public class TokenBusiness {
                 .orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT));
     }
 
-    //토큰으로 헤더 인증, 반환 userId
     public Long validationAccessToken(String accessToken){
         var userId=tokenService.validationToken(accessToken);
         return userId;

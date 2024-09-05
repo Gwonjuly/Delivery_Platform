@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.db.direction.DirectionEntity;
 import org.delivery.takeout.domain.direction.controller.model.DirectionResponse;
+import org.delivery.takeout.domain.direction.service.Base62Service;
 import org.delivery.takeout.domain.direction.service.DirectionService;
 import org.delivery.takeout.domain.kakao.model.DocumentDto;
 import org.delivery.takeout.domain.kakao.model.KakaoApiResponse;
 import org.delivery.takeout.domain.kakao.service.KakaoAddressSearchService;
-import org.delivery.takeout.domain.store.converter.StoreConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -24,7 +25,13 @@ public class StoreTakeoutService {
 
     private final KakaoAddressSearchService kakaoAddressSearchService;
     private final DirectionService directionService;
-    private final StoreConverter storeConverter;
+    private final Base62Service base62Service;
+
+    @Value("${takeout.direction.base.url}")
+    private String directionBaseUrl;
+
+    @Value("${takeout.road.base.url}")
+    private String roadViewBaseUrl;
 
     public List<DirectionResponse> storeTakeoutList(String address){
 
@@ -38,11 +45,23 @@ public class StoreTakeoutService {
         DocumentDto documentDto = kakaoApiResponse.getDocumentDtoList().get(0);
         log.info("DocumentDto: {}",documentDto);
 
-        List<DirectionEntity> directionEntityList = directionService.buildDirectionListByCategory(documentDto);
+        List<DirectionEntity> directionEntityList = directionService.buildDirectionList(documentDto);
+        //List<DirectionEntity> directionEntityList = directionService.buildDirectionListByCategory(documentDto);
         log.info("directionList: {}",directionEntityList);
 
         return  directionService.saveAll(directionEntityList).stream()
-                .map(storeConverter::toDirectionResponse)
+                .map(this::toDirectionResponse)
                 .collect(Collectors.toList());
+    }
+
+    public DirectionResponse toDirectionResponse(DirectionEntity directionEntity){
+
+        return DirectionResponse.builder()
+                .addressName(directionEntity.getTargetAddress())
+                .storeName(directionEntity.getTargetStoreName())
+                .distance(String.format("%.2f km",directionEntity.getDistance()))
+                .directionUrl(directionBaseUrl + base62Service.encodeDirectionId(directionEntity.getId()))
+                .roadViewUrl(roadViewBaseUrl + base62Service.encodeDirectionId(directionEntity.getId()))
+                .build();
     }
 }

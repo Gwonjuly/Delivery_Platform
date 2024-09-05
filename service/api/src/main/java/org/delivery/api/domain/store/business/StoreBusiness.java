@@ -6,6 +6,7 @@ import org.delivery.api.domain.store.controller.model.StoreResponse;
 import org.delivery.api.domain.store.converter.StoreConverter;
 import org.delivery.api.domain.store.service.StoreService;
 import org.delivery.db.store.enums.StoreCategory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,14 +18,11 @@ public class StoreBusiness {
     private final StoreService storeService;
     private final StoreConverter storeConverter;
 
-    //등록된 스토어 조회
+    @Transactional(readOnly = true)
     public List<StoreResponse> searchCategory (StoreCategory storeCategory){
         var storeList=storeService.searchByCategory(storeCategory);
         return storeList.stream()
                 .map(storeConverter::toResponse)
-                /*.map(it->{
-                    return storeConverter.toResponse(it);
-                })*/
                 .collect(Collectors.toList());
     }
 }

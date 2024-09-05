@@ -4,9 +4,9 @@ server:
 spring:
   applicatioon:
     name: takeout
-  config:
-    activate:
-      on-profile: local
+  #config:
+    #activate:
+      #on-profile: local
   datasource:
     url: jdbc:mysql://localhost:3306/delivery?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -14,7 +14,7 @@ spring:
     password: ${SPRING_DATA_SOURCE_PASSWORD}
   redis:
     host: localhost
-    post: 6379
+    port: 6379
   jpa:
     show-sql: true
     properties:
@@ -22,6 +22,20 @@ spring:
       dialect: .org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: validate
+  thymeleaf:
+    check-template-location: true
+    prefix: classpath:/templates/
+
+springdoc:
+  model-and-view-allowed: true
+
+takeout:
+  direction:
+    base:
+      url: http://localhost:8083/api/take-out/map/dir/
+  road:
+    base:
+      url: http://localhost:8083/api/take-out/road-view/dir/
 
 kakao:
   rest:

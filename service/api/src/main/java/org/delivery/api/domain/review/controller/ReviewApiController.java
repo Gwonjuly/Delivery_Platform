@@ -47,10 +47,6 @@ public class ReviewApiController {
             @PathVariable Long userOrderId
     ){
         ModelAndView model = new ModelAndView();
-        //유저 오더 ID로 리뷰 작성 페이지 요청  받기
-        //유저 오더 ID로 해당 리뷰의 등록 여부 확인
-        // 등록 시, 리뷰 엔티티의 모든 내용 반환
-        // 미 등록 시, 가게 이름과 주문 내용 반환
         var response = reviewBusiness.formReview(user, userOrderId);
         model.addObject("review", response);
         if(response.getReviewResponse() == null)
@@ -108,5 +104,4 @@ public class ReviewApiController {
         model.setViewName("review/storeReview/view");
         return response;
     }
-
 }

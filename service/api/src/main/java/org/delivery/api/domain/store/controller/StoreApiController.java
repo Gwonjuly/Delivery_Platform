@@ -19,18 +19,14 @@ public class StoreApiController {
 
     private final StoreBusiness storeBusiness;
 
-    @GetMapping("/search")//인자: 변수 or 객체
+    @GetMapping("/search")
     public Api<List<StoreResponse>> search(
-        @RequestParam(required = false)//필수 값 아님
+        @RequestParam(required = false)
         StoreCategory storeCategory
     ){
         var response=storeBusiness.searchCategory(storeCategory);
         return Api.OK(response);
     }
 
-
-
-
-
-
+    //todo 가게 이름으로 검색 (포장 연동)
 }

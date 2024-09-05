@@ -4,7 +4,6 @@ import org.delivery.common.annotation.Converter;
 import org.delivery.common.error.ErrorCode;
 import org.delivery.api.domain.storemenu.controller.model.StoreMenuResponse;
 import org.delivery.common.exception.ApiException;
-import org.delivery.db.store.StoreEntity;
 import org.delivery.db.storemenu.StoreMenuEntity;
 
 import java.util.List;
@@ -13,19 +12,6 @@ import java.util.stream.Collectors;
 
 @Converter
 public class StoreMenuConverter {
-
-   /* public StoreMenuEntity toEntity(StoreMenuRegisterRequest request, StoreEntity storeEntity){
-        return Optional.ofNullable(request)
-                .map(it->{
-                    return StoreMenuEntity.builder()
-                            .store(storeEntity)
-                            .name(request.getName())
-                            .amount(request.getAmount())
-                            .thumbnailUrl(request.getThumbnailUrl())
-                            .build();
-                })
-                .orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT));
-    }*/
 
     public StoreMenuResponse toResponse(StoreMenuEntity entity){
         return Optional.ofNullable(entity)

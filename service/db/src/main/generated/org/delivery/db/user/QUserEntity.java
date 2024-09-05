@@ -37,7 +37,7 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final DateTimePath<java.time.LocalDateTime> registeredAt = createDateTime("registeredAt", java.time.LocalDateTime.class);
 
-    public final ListPath<org.delivery.db.review.ReviewEntity, org.delivery.db.review.QReviewEntity> reviewEntityList = this.<org.delivery.db.review.ReviewEntity, org.delivery.db.review.QReviewEntity>createList("reviewEntityList", org.delivery.db.review.ReviewEntity.class, org.delivery.db.review.QReviewEntity.class, PathInits.DIRECT2);
+    public final SetPath<org.delivery.db.review.ReviewEntity, org.delivery.db.review.QReviewEntity> reviewEntitySet = this.<org.delivery.db.review.ReviewEntity, org.delivery.db.review.QReviewEntity>createSet("reviewEntitySet", org.delivery.db.review.ReviewEntity.class, org.delivery.db.review.QReviewEntity.class, PathInits.DIRECT2);
 
     public final EnumPath<org.delivery.db.user.enums.UserStatus> status = createEnum("status", org.delivery.db.user.enums.UserStatus.class);
 

@@ -1,6 +1,5 @@
 package org.delivery.api.domain.store.controller.model;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +8,6 @@ import org.delivery.db.store.enums.StoreCategory;
 import org.delivery.db.store.enums.StoreStatus;
 
 import java.math.BigDecimal;
-import java.util.function.BiFunction;
 
 @Data
 @AllArgsConstructor

@@ -4,15 +4,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.common.api.Api;
-import org.delivery.common.message.model.UserOrderMessage;
 import org.delivery.storeadmin.domain.authorization.model.UserSession;
 import org.delivery.storeadmin.domain.userorder.business.UserOrderBusiness;
 import org.delivery.storeadmin.domain.userorder.controller.model.UserOrderDetailResponse;
 import org.delivery.storeadmin.domain.userorder.controller.model.UserOrderRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController

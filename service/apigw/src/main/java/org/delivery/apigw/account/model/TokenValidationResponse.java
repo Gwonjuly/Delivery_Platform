@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TokenValidationResponse {
     private Long userId;
+    private String email;
 }

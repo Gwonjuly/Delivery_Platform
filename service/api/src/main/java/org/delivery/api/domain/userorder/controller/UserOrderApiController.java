@@ -10,6 +10,8 @@ import org.delivery.api.domain.userorder.controller.model.UserOrderRequest;
 import org.delivery.api.domain.userorder.controller.model.UserOrderResponse;
 import org.delivery.common.annotation.UserSession;
 import org.delivery.common.api.Api;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,7 +34,7 @@ public class UserOrderApiController {
             @Valid
             @RequestBody Api<UserOrderRequest> userOrderRequest,
 
-            @Parameter(hidden = true)//swagger에서 안보이게 숨김
+            @Parameter(hidden = true)
             @UserSession User user){
         var response=userOrderBusiness.userOrder(user, userOrderRequest.getBody());
         return Api.OK(response);
@@ -65,7 +67,7 @@ public class UserOrderApiController {
     }
 
     //주문 1건에 대한 주문 내역 조회
-    @GetMapping("/id/{orderId}")//path variable
+    @GetMapping("/id/{orderId}")
     public ModelAndView read(
             @Parameter(hidden = true)
             @UserSession User user,
@@ -92,17 +94,19 @@ public class UserOrderApiController {
 
     ){
         List<UserOrderDetailResponse> responses = userOrderBusiness.viewAll(user);
-        /*responses.forEach(i->{
-            log.info("user:{}",i.getUserOrderResponse());
-            log.info("store:{}",i.getStoreResponse());
-            i.getStoreMenuResponseList().forEach(j->{
-                log.info("menu:{}",j.getName());
-            });
-        });*/
         ModelAndView model = new ModelAndView();
         model.addObject("orders", responses);
         model.setViewName("userOrder/orderList");
         return model;
     }
 
+    @GetMapping("/alarm")
+    public Api<Page<UserOrderResponse>> alarm(
+            @Parameter(hidden = true)
+            @UserSession User user,
+            @Parameter(hidden = true)
+            Pageable pageable){
+        var responses = userOrderBusiness.alarmList(user,pageable);
+        return Api.OK(responses);
+    }
 }

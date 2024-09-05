@@ -1,6 +1,5 @@
 package org.delivery.api.domain.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,12 +33,5 @@ public class UserCache {
 
     private String getKey(Long userId){
         return "UID:" + userId;
-    }
-
-    private String serializeUser(User user) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(user);
-    }
-    private User deserializeUser(String json) throws JsonProcessingException {
-        return objectMapper.readValue(json, User.class);
     }
 }

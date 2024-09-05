@@ -1,7 +1,6 @@
 package org.delivery.api.domain.user.business;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.delivery.api.domain.user.UserCache;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.common.annotation.Business;
@@ -14,7 +13,7 @@ import org.delivery.api.domain.user.converter.UserConverter;
 import org.delivery.api.domain.user.service.UserService;
 import org.springframework.transaction.annotation.Transactional;
 
-@Business//Custom Annotation
+@Business
 @RequiredArgsConstructor
 public class UserBusiness {
 

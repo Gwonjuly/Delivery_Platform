@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.delivery.common.error.StoreErrorCode;
 import org.delivery.common.exception.ApiException;
 import org.delivery.common.message.model.UserOrderMessage;
-import org.delivery.db.userordermenu.UserOrderMenuEntity;
 import org.delivery.storeadmin.domain.sse.connection.SseConnectionPool;
 import org.delivery.storeadmin.domain.storemenu.converter.StoreMenuConverter;
 import org.delivery.storeadmin.domain.storemenu.service.StoreMenuService;
@@ -15,7 +14,6 @@ import org.delivery.storeadmin.domain.userorder.service.UserOrderService;
 import org.delivery.storeadmin.domain.userordermenu.service.UserOrderMenuService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,13 +27,6 @@ public class UserOrderBusiness {
     private final StoreMenuConverter storeMenuConverter;
     private final UserOrderConverter userOrderConverter;
 
-    /**
-     * 주문이 들어오면
-     * 주문 내역 찾기
-     * 스토어 찾기
-     * 연결된 session 찾기
-     * push 하기
-     */
     public void pushUserOrder(UserOrderMessage userOrderMessage){
         //주문 내역 찾기
         var userOrderEntity = userOrderService.getUserOrder(userOrderMessage.getUserOrderId())

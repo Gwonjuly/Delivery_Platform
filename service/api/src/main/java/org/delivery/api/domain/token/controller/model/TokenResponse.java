@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Builder
 public class TokenResponse {
 
-    //항상 토큰의 정보를 내릴 수 있도록 정의함
     private String accessToken;
     private LocalDateTime accessTokenExpiredAt;
     private String refreshToken;

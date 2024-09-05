@@ -12,7 +12,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class UserRegisterRequest {
 
-    //UserRegisterRequest에 있는 @Valid로 읺해 요청 시 검증함
     @NotBlank
     private String name;
 

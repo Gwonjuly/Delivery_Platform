@@ -1,11 +1,9 @@
 package org.delivery.takeout.domain.direction.controller
 
 import org.delivery.takeout.domain.direction.controller.model.DirectionResponse
+import org.delivery.takeout.domain.direction.service.DirectionService
 import org.delivery.takeout.domain.store.service.StoreTakeoutService
-import org.mockito.Mock
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.MockMvcBuilder
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
@@ -15,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
 
@@ -22,10 +21,11 @@ class DirectionApiControllerTest extends Specification {
 
     private MockMvc mvc
     private StoreTakeoutService storeTakeoutService = Mock()
+    private DirectionService directionService = Mock()
     private List<DirectionResponse> directionResponseList
 
     def setup(){
-        mvc = MockMvcBuilders.standaloneSetup(new DirectionApiController(storeTakeoutService)).build()
+        mvc = MockMvcBuilders.standaloneSetup(new DirectionApiController(storeTakeoutService,directionService)).build()
 
         directionResponseList = new ArrayList<>()
         directionResponseList.addAll(
@@ -69,4 +69,33 @@ class DirectionApiControllerTest extends Specification {
             .andDo(print())
     }
 
+    def "searchDirection(shortUrl) - GET"(){
+        given:
+        String encodedId = "3H6"
+        String redirectUrl = "https://map.kakao.com/link/map/미후,38.11,128.11"
+
+        when:
+        directionService.searchDirectionById(encodedId) >> redirectUrl
+        def result = mvc.perform(get("/api/take-out/map/dir/{encodedId}",encodedId))
+
+        then:
+        result.andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl(redirectUrl))
+            .andDo(print())
+    }
+
+    def "searchRoadMap(shortUrl) - GET"(){
+        given:
+        String encodedId = "3H6"
+        String redirectUrl = "https://map.kakao.com/link/roadview/미후,38.11,128.11"
+
+        when:
+        directionService.searchRoadViewById(encodedId) >> redirectUrl
+        def result = mvc.perform(get("/api/take-out/road-view/dir/{encodedId}",encodedId))
+
+        then:
+        result.andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(redirectUrl))
+                .andDo(print())
+    }
 }

@@ -1,59 +1,90 @@
 package org.delivery.storeadmin.config.security;
 
+import lombok.extern.slf4j.Slf4j;
+import org.delivery.storeadmin.domain.authorization.StoreUserAuthorizationService;
+import org.delivery.storeadmin.domain.storeuser.service.StoreUserService;
+import org.delivery.storeadmin.filter.AuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity // security 활성화
+@EnableWebSecurity
+@Slf4j
 public class SecurityConfig {
 
-    //swagger 주소는 인증에서 제외
+    @Autowired
+    private StoreUserAuthorizationService storeUserAuthorizationService;
+    @Autowired
+    private StoreUserService storeUserService;
+    private PasswordEncoder passwordEncoder;
+    private Environment env;
+
+
+    private final String storeLoginUri = "/login";
+
     private List<String> SWAGGER=List.of(
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs/**"
     );
 
-    //이전 방법: 상속 받기, 현재 방법: bin 등록
+    public SecurityConfig(StoreUserAuthorizationService storeUserAuthorizationService, PasswordEncoder passwordEncoder, Environment env){
+        this.storeUserAuthorizationService = storeUserAuthorizationService;
+        this.passwordEncoder = passwordEncoder;
+        this.env = env;
+    }
+
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
+    protected SecurityFilterChain storeFilterChain(HttpSecurity httpSecurity) throws Exception{
+
+AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(storeUserAuthorizationService).passwordEncoder(passwordEncoder);
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
+
+
+        httpSecurity.csrf().disable();
+
         httpSecurity
-            .csrf().disable() // default: 활성화, 즉 crsf 공격에 대해서 disable
-            .authorizeHttpRequests(it->{
-                it
-                    .requestMatchers(
-                        PathRequest.toStaticResources().atCommonLocations() //static 리소스에 대해서
-                    ).permitAll() //모든 요청을 허가
+                .antMatcher(storeLoginUri)
+                .authorizeHttpRequests((it)->it
+                        .requestMatchers(new AntPathRequestMatcher(storeLoginUri)).authenticated())
+                        .authenticationManager(authenticationManager);
 
-                    //swagger 주소는 인증없이 허가
-                    .mvcMatchers( //제외할 주소를 패턴으로 입력
-                        SWAGGER.toArray(new String[0])
-                    ).permitAll()
 
-                    .mvcMatchers(
-                        "/open-api/**" //open-api 하위에 있는 주소에 대해 모든 요청을 허가
-                    ).permitAll()
+        httpSecurity.authorizeHttpRequests((it) -> it
+                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                    .mvcMatchers(SWAGGER.toArray(new String[0])).permitAll()
+                    .mvcMatchers("/open-api/**").permitAll()
+                    .anyRequest().authenticated()
+                );
 
-                    .anyRequest().authenticated();//그 외 모든 주소는 인증을받음
-            })
-            .formLogin(Customizer.withDefaults());//로그인 방식: 디폴트 방식
+
+        httpSecurity
+                .headers((it) ->it.frameOptions((ops) -> ops.sameOrigin()))
+                .formLogin(Customizer.withDefaults());
+
         return httpSecurity.build();
    }
 
-   //Ifs: encods, matches, upgradingEncoding
-    @Bean
-   public PasswordEncoder passwordEncoder(){
-        //hash 방식으로 암호화
-        //사용자가 넣었던 비밀번호를 인코딩은 할 수 있느나, 디코딩은 불가능
-        return new BCryptPasswordEncoder();
+
+
+   private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager) throws Exception{
+        return new AuthenticationFilter(authenticationManager, storeUserAuthorizationService, env, storeUserService);
     }
+
+
 }

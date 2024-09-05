@@ -1,6 +1,8 @@
 package org.delivery.takeout.domain.direction.service
 
+import org.delivery.db.DirectionRepository
 import org.delivery.takeout.domain.kakao.model.DocumentDto
+import org.delivery.takeout.domain.kakao.service.KakaoCategorySearchService
 import org.delivery.takeout.domain.store.model.StoreDto
 import org.delivery.takeout.domain.store.service.StoreSearchService
 import spock.lang.Specification
@@ -8,8 +10,11 @@ import spock.lang.Specification
 class DirectionServiceTest extends Specification {
 
     private StoreSearchService storeSearchService = Mock()
+    private DirectionRepository directionRepository = Mock()
+    private KakaoCategorySearchService kakaoCategorySearchService = Mock()
+    private Base62Service base62Service = Mock()
 
-    private DirectionService directionService = new DirectionService(storeSearchService)
+    private DirectionService directionService = new DirectionService(storeSearchService, directionRepository, kakaoCategorySearchService, base62Service)
 
     private List<StoreDto> storeDtoList
 

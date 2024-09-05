@@ -29,6 +29,10 @@ public class QStoreEntity extends EntityPathBase<StoreEntity> {
     //inherited
     public final NumberPath<Long> id = _super.id;
 
+    public final NumberPath<Double> latitude = createNumber("latitude", Double.class);
+
+    public final NumberPath<Double> longitude = createNumber("longitude", Double.class);
+
     public final NumberPath<java.math.BigDecimal> minimumAmount = createNumber("minimumAmount", java.math.BigDecimal.class);
 
     public final NumberPath<java.math.BigDecimal> minimumDeliveryAmount = createNumber("minimumDeliveryAmount", java.math.BigDecimal.class);

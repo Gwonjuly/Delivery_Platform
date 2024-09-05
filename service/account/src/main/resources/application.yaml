@@ -1,10 +1,40 @@
 server:
   port: 8082
 
+spring:
+  application:
+    name: account-service
+  redis:
+    host: localhost
+    port: 6379
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      format-sql: true
+      dialect: .org.hibernate.dialect.MySQL8Dialect
+      hibernate.format_sql: true
+      hibernate.default_batch_fetch_size: 100
+    defer-datasource-initialization: true
+    open-in-view: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/delivery?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${SPRING_DATA_SOURCE_USER}
+    password: ${SPRING_DATA_SOURCE_PASSWORD}
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+
 token:
   secret:
     key: SpringBootJWTHelperTokenSecretKeyValue123!@#
   access-token:
-    plus-hour: 1
+    plus-hour: 4
   refresh-token:
     plus-hour: 12

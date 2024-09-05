@@ -25,7 +25,7 @@ public class SseConnectionPool implements ConnectionPoosIfs<String, UserSseConne
     }
 
     @Override
-    public void onCompletionCallback(UserSseConnection session) {//tiemout으로 completion 될 시, 호출 됨
+    public void onCompletionCallback(UserSseConnection session) {//timeout 으로 completion 될 시, 호출
         log.info("call back connection pool completion: {}", session);
         connectionPool.remove(session.getUniqueKey());
     }

@@ -16,8 +16,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 @Component
 @Slf4j
 public class ServicePrivateApiFilter extends AbstractGatewayFilterFactory<ServicePrivateApiFilter.Config> {
@@ -31,9 +29,9 @@ public class ServicePrivateApiFilter extends AbstractGatewayFilterFactory<Servic
         return (exchange, chain) -> {
             var uri = exchange.getRequest().getURI();
             log.info("service api private filter route uri: {}",uri);
-            //account server를 통한 인증 실행
+
             // 1. 토큰의 유무 확인
-            var headers = exchange.getRequest().getHeaders().getOrEmpty("authorization-token");
+            var headers = exchange.getRequest().getHeaders().getOrEmpty("Bearer");
 
             String token;
             if(headers.isEmpty()){
@@ -59,7 +57,6 @@ public class ServicePrivateApiFilter extends AbstractGatewayFilterFactory<Servic
                     .tokenDto(TokenDto.builder().token(token).build())
                     .build();
             log.info("request: {}", request);
-            System.out.println("request:"+ request);
 
             return webClient //토큰 검증
                     .post()
@@ -67,7 +64,7 @@ public class ServicePrivateApiFilter extends AbstractGatewayFilterFactory<Servic
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .onStatus(HttpStatus::isError, response -> response.bodyToMono(
-                            new ParameterizedTypeReference<Object>() {})
+                            new ParameterizedTypeReference<TokenValidationResponse>() {})
                             .flatMap(error -> {
                                 log.error("response error? :{}",error);
                                 return Mono.error(new ApiException(TokenErrorCode.TOKEN_EXCEPTION));
@@ -77,14 +74,15 @@ public class ServicePrivateApiFilter extends AbstractGatewayFilterFactory<Servic
                         //응답이 왔을 경우 (사용자 인증 통과)
                          log.info("response: {}", response);
 
-                         // 3. 사용자 정보 추가(프록시를 지날 때, 데이터 주입)
                         var userId = response.getUserId().toString();
+                        var email = response.getEmail();
+                        log.info("user-info :{}",email);
 
                             //proxy request 생성
                         var proxyRequest = exchange.getRequest().mutate()
                                 .header("x-user-id",userId)//헤더에 userId 추가
+                                .header("user-email",email)
                                 .build();
-
                         var requestBuild = exchange.mutate().request(proxyRequest).build();
                         var mono = chain.filter(requestBuild); //API 서버로 보냄
                         return mono;
