@@ -117,7 +117,8 @@
       },
       mounted() {
         // SSE 연결
-        const url = "http://localhost:8081/api/sse/connect";    // 접속주소
+        //const url = "http://localhost:8081/api/sse/connect";    // 접속주소
+        const url = "http://localhost:9090/store-admin-service/api/sse/connect";
         const eventSource = new EventSource(url);               // sse 연결
 
         eventSource.onopen = event => {
