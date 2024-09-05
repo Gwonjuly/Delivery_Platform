@@ -27,6 +27,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter-amqp' //rabbitmq 설정: amqp 프로토콜
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'//security
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation project(':db')
     implementation project(':common')

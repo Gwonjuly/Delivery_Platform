@@ -27,6 +27,4 @@ public class StoreApiController {
         var response=storeBusiness.searchCategory(storeCategory);
         return Api.OK(response);
     }
-
-    //todo 가게 이름으로 검색 (포장 연동)
 }

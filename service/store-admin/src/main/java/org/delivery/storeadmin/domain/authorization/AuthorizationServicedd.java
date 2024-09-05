@@ -1,3 +1,4 @@
+/*
 package org.delivery.storeadmin.domain.authorization;
 
 import lombok.RequiredArgsConstructor;
@@ -42,3 +43,4 @@ public class AuthorizationService implements UserDetailsService {
         }).orElseThrow(()->new UsernameNotFoundException(username));
     }
 }
+*/

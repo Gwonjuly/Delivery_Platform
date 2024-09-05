@@ -62,9 +62,10 @@ public class SecurityConfig {
                         .authenticationManager(authenticationManager);
 
         httpSecurity
+                .formLogin(Customizer.withDefaults())
                 .addFilter(getAuthenticationFilter(authenticationManager))
-                .headers((it) ->it.frameOptions((ops) -> ops.sameOrigin()))
-                .formLogin(Customizer.withDefaults());
+                .headers((it) ->it.frameOptions((ops) -> ops.sameOrigin()));
+
         return httpSecurity.build();
    }
 

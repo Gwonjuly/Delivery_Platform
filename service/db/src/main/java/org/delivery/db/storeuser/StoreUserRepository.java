@@ -10,4 +10,7 @@ public interface StoreUserRepository extends JpaRepository<StoreUserEntity, Long
     //이메일, 상태
     //select *from store_user where email =? and status =? order by id desc
     Optional<StoreUserEntity> findFirstByEmailAndStatusOrderByIdDesc(String email, StoreUserStatus status);
+
+    Optional<StoreUserEntity> findFirstByIdAndStatusOrderByIdDesc(Long userId, StoreUserStatus status);
+
 }

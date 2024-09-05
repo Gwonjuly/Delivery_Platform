@@ -1,8 +1,11 @@
 package org.delivery.takeout.domain.direction.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.delivery.common.annotation.UserSession;
 import org.delivery.takeout.domain.direction.controller.model.DirectionRequest;
+import org.delivery.takeout.domain.direction.controller.model.User;
 import org.delivery.takeout.domain.direction.service.DirectionService;
 import org.delivery.takeout.domain.store.service.StoreTakeoutService;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +21,16 @@ public class DirectionApiController {
     private final DirectionService directionService;
 
     @GetMapping("/")
-    public ModelAndView main(){
+    public ModelAndView main(@Parameter(hidden = true) @UserSession User user){
         ModelAndView mvc = new ModelAndView();
         mvc.setViewName("main");
         return mvc;
     }
 
     @PostMapping("/search")
-    public ModelAndView search(@ModelAttribute DirectionRequest request){
+    public ModelAndView search(
+            @Parameter(hidden = true) @UserSession User user,
+            @ModelAttribute DirectionRequest request){
         var result = storeTakeoutService.storeTakeoutList(request.getAddress());
         ModelAndView mvc = new ModelAndView();
         mvc.setViewName("directionList");
